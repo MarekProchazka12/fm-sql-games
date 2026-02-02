@@ -1,73 +1,99 @@
-/* src/pages/Home.css */
-
 .home-container {
-  max-width: 1000px;
-  margin: 0 auto;
+  min-height: 100vh;
+  background-color: #f4f4f7;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  color: #333;
   padding: 40px 20px;
+}
+
+.home-header {
   text-align: center;
+  margin-bottom: 50px;
 }
 
 .home-header h1 {
+  color: #ef7d00; /* TUL Oranžová */
   font-size: 3rem;
   margin-bottom: 10px;
-  color: orange;
-  
-  text-shadow: 2px 2px #555; /* Minecraft-ish stín */
+  letter-spacing: -1px;
 }
 
-/* Nastavení mřížky */
+.home-header p {
+  color: #666;
+  font-size: 1.2rem;
+}
+
 .game-grid {
   display: grid;
-  /* Vytvoří sloupce, které se automaticky přizpůsobí šířce (min 280px) */
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 30px; /* Mezera mezi kartičkami */
-  margin-top: 50px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  max-width: 1100px;
+  margin: 0 auto;
 }
 
-/* Styl samotné kartičky */
 .game-card {
-  background: #c6c6c6;
-  border: 4px solid #000;
-  box-shadow: inset 4px 4px #fff, inset -4px -4px #555;
-  transition: transform 0.2s, box-shadow 0.2s;
-  cursor: pointer;
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-bottom: 5px solid #ef7d00; /* Oranžový detail */
+}
+
+.game-card:hover:not(.disabled) {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(239, 125, 0, 0.2);
+}
+
+.game-card.disabled {
+  filter: grayscale(1);
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 
 .game-card a {
   text-decoration: none;
-  color: #3f3f3f;
-  display: block;
-  padding: 20px;
+  color: inherit;
 }
 
-/* Hover efekt - kartička se "přiblíží" */
-.game-card:hover:not(.disabled) {
-  transform: translateY(-5px);
-  box-shadow: inset 4px 4px #fff, inset -4px -4px #555, 0 10px 20px rgba(0,0,0,0.3);
-}
-
-.game-card.disabled {
-  opacity: 0.6;
-  filter: grayscale(1);
-  cursor: not-allowed;
+.card-content {
+  padding: 25px;
+  text-align: center;
 }
 
 .card-image {
-  font-size: 4rem;
-  margin-bottom: 15px;
+  height: 120px;
+  background: #f9f9f9;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+}
+
+.game-card h2 {
+  margin: 0 0 10px 0;
+  color: #222;
+}
+
+.game-card p {
+  color: #777;
+  font-size: 0.95rem;
+  height: 50px;
 }
 
 .play-button {
   display: inline-block;
-  margin-top: 15px;
-  background: #7c7c7c;
-  border: 2px solid #000;
+  margin-top: 20px;
+  padding: 10px 30px;
+  background-color: #ef7d00;
   color: white;
-  padding: 8px 20px;
+  border-radius: 25px;
   font-weight: bold;
+  transition: background 0.2s;
 }
 
 .game-card:hover .play-button {
-  background: #55ff55; /* Zelená při najetí na aktivní hru */
-  color: #000;
+  background-color: #cc6a00;
 }
