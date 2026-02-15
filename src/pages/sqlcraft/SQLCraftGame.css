@@ -1,15 +1,186 @@
 .game-screen {
-  max-width: 900px;
   margin: 0 auto;
-  padding: 20px;
+  justify-content: center;
   font-family: '/fonts/Minecraft.ttf', 'Courier New', monospace;
+  
+
+}
+
+
+.bottom-area{
+  display: flex;
+  flex-direction: column;
+  justify-content: center; 
+  align-items: center;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+
+.side-overlay {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 650px;
+  background: #c6c6c6;
+  border-right: 4px solid #000;
+  z-index: 150;
+  transform: translateX(-100%);
+  transition: transform 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.1);
+  padding: 80px 20px 20px 80px;
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; 
+}
+
+.overlay-content {
+  flex-grow: 1;       
+  overflow-y: auto;   
+  overflow-x: hidden;
+  padding-right: 10px; 
+}
+
+.overlay-content::-webkit-scrollbar,
+.table-wrapper::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+.overlay-content::-webkit-scrollbar-track,
+.table-wrapper::-webkit-scrollbar-track {
+  background: #333;
+  border: 2px solid #000;
+}
+
+.overlay-content::-webkit-scrollbar-thumb,
+.table-wrapper::-webkit-scrollbar-thumb {
+  background: #8b8b8b;
+  border: 2px solid #000;
+  box-shadow: inset 2px 2px #dbdbdb;
+}
+
+.overlay-content::-webkit-scrollbar-thumb:hover,
+.table-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #55ff55;
+}
+
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: auto;
+  transform: rotateX(180deg);
+  border: 2px solid #555;
+}
+
+.mc-table {
+  min-width: 100%; 
+  border-collapse: collapse;
+  background: white; 
+  image-rendering: pixelated;
+  transform: rotateX(180deg);
+}
+
+.table-wrapper::-webkit-scrollbar {
+  height: 12px;
+  height: 12px;
+}
+.table-wrapper::-webkit-scrollbar-track {
+  background: #333;
+}
+.table-wrapper::-webkit-scrollbar-thumb {
+  background: #8b8b8b;
+  border: 2px solid #000;
+}
+
+
+.side-toolbar {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 200; 
+}
+
+
+
+.side-overlay.open {
+  transform: translateX(0);
+}
+
+
+
+.content-box h3 {
+  border-bottom: 2px solid #777;
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+  font-size: 1.2rem;
+}
+
+.close-overlay {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  background: #8b8b8b;
+  border: 2px solid #000;
+  color: white;
+  cursor: pointer;
+  padding: 5px 10px;
+}
+
+.schema-img {
+  width: 100%;
+  border: 2px solid #000;
+  background: white;
+}
+
+.side-overlay .mc-table {
+  font-size: 0.8rem;
+  background: white;
+}
+
+
+.send-btn {
+  display: block;
+  width: 50%;
+  padding: 15px;
+  background: #7c7c7c;
+  border: 3px solid #000;
+  color: white;
+  font-family: inherit;
+  font-size: 1rem;
+  cursor: pointer;
+  text-shadow: 2px 2px #3f3f3f;
+  box-shadow: inset 3px 3px #bcbcbc, inset -3px -3px #444;
+}
+
+.input-area{
+  resize: none;
+  width: 48%;
+  height: 120px;
+  background: #000;
+  color: #55ff55;
+  border: 4px solid #7c7c7c;
+  padding: 15px;
+  font-family: 'Courier New', monospace;
+  font-size: 1.1rem;
+  outline: none;
 }
 
 .info-bar {
+  width: auto;
   background: #333;
   color: #55ff55;
   padding: 10px 20px;
-  border: 3px solid #000;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  border-bottom: #000 3px;
   margin-bottom: 20px;
   display: flex;
   justify-content: space-between;
@@ -28,19 +199,6 @@
   margin-top: 0;
   border-bottom: 2px solid #ccc;
   padding-bottom: 5px;
-}
-
-textarea {
-  width: 100%;
-  height: 120px;
-  background: #000;
-  color: #55ff55;
-  border: 4px solid #7c7c7c;
-  padding: 15px;
-  font-family: 'Courier New', monospace;
-  font-size: 1.1rem;
-  margin-bottom: 10px;
-  outline: none;
 }
 
 .error-msg {
