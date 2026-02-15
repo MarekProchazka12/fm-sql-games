@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import initSqlJs from 'sql.js';
 import './SQLCraftGame.css';
 import gameData from '../../data/SQLCraft.json' 
+import schema from '../../assets/SQLCraft_scheme.png'
 
 export default function SQLCraftGame() {
   const location = useLocation();
@@ -11,6 +12,8 @@ export default function SQLCraftGame() {
   const [activeOverlay, setActiveOverlay] = useState(null);
   
   const [db, setDb] = useState(null);
+  const [hearts, setHearts] = useState(9);
+
   const [query, setQuery] = useState("SELECT * FROM inventory");
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
@@ -37,6 +40,10 @@ export default function SQLCraftGame() {
       setResult(res);
       setError(null);
     } catch (e) {
+      if(hearts != 0){
+          setHearts(hearts-1);
+      }
+      
       setError(e.message);
     }
   };
@@ -46,7 +53,7 @@ export default function SQLCraftGame() {
   return (
     <div className="game-screen">
       <div className="info-bar">
-        <span>Hráč: Steve</span>  <span>Obtížnost: {difficulty}</span>  {difficulty === 'easy' &&   <span>Nápověda: Použij SELECT * FROM ...</span>}
+        <span>Hráč: Steve</span> | <span>Obtížnost: {difficulty}</span>  | <span>{"💔".repeat(9-hearts)}{"❤️".repeat(hearts)}</span>  
       </div>
 
       <div className="side-toolbar">
@@ -71,14 +78,14 @@ export default function SQLCraftGame() {
           {activeOverlay === 'hint' && (
             <div className="content-box">
               <h3>NÁPOVĚDA</h3>
-              <p className="hint-text">neco</p>
+              <p className="hint-text">HINT HERE</p>
             </div>
           )}
 
           {activeOverlay === 'schema' && (
             <div className="content-box">
               <h3>SCHÉMA</h3>
-              <img src="/assets/schema.png" alt="Database Schema" className="schema-img" />
+              <img src={schema} alt="Database Schema" className="schema-img" />
             </div>
           )}
 
