@@ -6,14 +6,14 @@ const games = [
     id: 'sqlcraft',
     title: 'SQL Craft',
     description: 'Sestav diamantový meč v kostičkovém světě pomocí SQL dotazů.',
-    image: '/assets/sqlcraft-icon.png',
+    image: '/pageAssets/SQLCraft/scenes/20.jpg',
     active: true
   },
   {
     id: 'tulescape',
     title: 'Escape from TUL',
     description: 'Uteč z TULky',
-    image: '/assets/tulescape-icon.png'
+    image: ''
   }
 ]
 
@@ -29,7 +29,7 @@ function Home(){
           <div key={game.id} className={`game-card ${!game.active ? 'disabled' : ''}`}>
             <Link to={game.active ? `/${game.id}` : '#'}>
               <div className="card-content">
-                <div className="card-image">
+                <div className="card-image" style={{backgroundImage: `url("${game.image}")`, backgroundSize: "cover", backgroundPosition: "center", imageRendering:"pixelated"}}>
                   
                 </div>
                 <h2>{game.title}</h2>
