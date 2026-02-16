@@ -13,11 +13,12 @@ export default function SQLCraftGame() {
   
   const [db, setDb] = useState(null);
   const [hearts, setHearts] = useState(9);
-
-  const [query, setQuery] = useState("SELECT * FROM inventory");
+  const [currentScene, setCurrentScene] = useState(1);
+  const [lastSuccessScene, setLastSuccessScene] = useState(0);
+  const currSceneData = gameData.scenes[currentScene - 1]
+  const [query, setQuery] = useState("SEM PIŠ DOTAZY");
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
-
   const toggleOverlay = (type) => {
     setActiveOverlay(activeOverlay === type ? null : type);
   };
@@ -37,6 +38,20 @@ export default function SQLCraftGame() {
     setResult(null);
     try {
       const res = db.exec(query);
+      let trimmedUser = query.toLowerCase().trim();
+      let trimmedAnswer = (currSceneData.answer).toLowerCase().trim();
+      if(!trimmedUser.endsWith(";")){
+        trimmedUser += ";";
+      }
+      
+      if(trimmedUser == trimmedAnswer){
+        console.log("prvni if")
+        if((currentScene -1)  == lastSuccessScene  ){
+          setLastSuccessScene(prev => prev + 1)
+          console.log("druhy if")
+          console.log(lastSuccessScene)
+        }
+      }
       setResult(res);
       setError(null);
     } catch (e) {
@@ -51,10 +66,21 @@ export default function SQLCraftGame() {
   if (!db) return <div className="loading">Načítám svět...</div>;
 
   return (
-    <div className="game-screen">
+    <div className="game-screen" style={{ backgroundImage: `url("/pageAssets/SQLCraft/scenes/${currSceneData.img}")`, backgroundSize:"cover", backgroundPosition:"center" }}>
       <div className="info-bar">
         <span>Hráč: Steve</span> | <span>Obtížnost: {difficulty}</span>  | <span>{"💔".repeat(9-hearts)}{"❤️".repeat(hearts)}</span>  
       </div>
+
+      
+      {currentScene > 1 &&(<button className="previous-scene" onClick={()=>setCurrentScene(prev => prev -1)}>
+          ◀
+      </button>)}
+
+      {currentScene <= lastSuccessScene &&
+      <button className="next-scene" onClick={()=>setCurrentScene(prev => prev +1)}>
+          ▶
+      </button>}
+
 
       <div className="side-toolbar">
         <button 
@@ -116,8 +142,9 @@ export default function SQLCraftGame() {
       </div>
       
       <div className="task-book">
-        <h3>Úkol 1: Inventář</h3>
-        <p>Vypiš všechny věci z tabulky <strong>inventory</strong>.</p>
+        <h3>Úkol {currSceneData.id}</h3>
+        <p>{currSceneData.story}</p>
+        <p><small>{currSceneData.prompt}</small></p>
       </div>
 
 

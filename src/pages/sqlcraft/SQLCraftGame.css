@@ -1,8 +1,23 @@
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+
 .game-screen {
-  margin: 0 auto;
-  justify-content: center;
+  position: fixed; /* Místo absolute/relative použijeme fixed */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Rozmístí info-bar nahoru a bottom-area dolů */
+  box-sizing: border-box;
   font-family: '/fonts/Minecraft.ttf', 'Courier New', monospace;
-  
 
 }
 
@@ -28,7 +43,7 @@
   border-right: 4px solid #000;
   z-index: 150;
   transform: translateX(-100%);
-  transition: transform 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.1);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   padding: 80px 20px 20px 80px;
   box-sizing: border-box;
 
@@ -99,7 +114,7 @@
 
 .side-toolbar {
   position: absolute;
-  left: 10px;
+  /*left: 10px;*/
   top: 50%;
   transform: translateY(-50%);
   display: flex;
@@ -174,19 +189,43 @@
 }
 
 .info-bar {
-  width: auto;
-  background: #333;
-  color: #55ff55;
-  padding: 10px 20px;
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
-  border-bottom: #000 3px;
-  margin-bottom: 20px;
+  /* Layout zůstává podobný */
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  
+  /* Minecraft barvy a tvary */
+  background: #c6c6c6; /* Světlejší šedá je pro MC UI typičtější */
+  color: #ffffff;
+  padding: 10px 30px;
+  margin: 0 auto 20px auto; /* Centrování baru */
+  width: fit-content; /* Bar se přizpůsobí obsahu, nebo dej 90% */
+  min-width: 600px;
+
+  /* --- MINECRAFT BORDER MAGIE --- */
+  border: 4px solid #000; /* Tlustý černý vnější okraj */
+  border-top: none;       /* Pokud chceš, aby bar "visel" z horní hrany */
+  
+  /* Odstranění zaoblení - Minecraft je kostičkovaný! */
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+
+  /* 3D efekt pomocí vnitřního stínu: 
+     Světlý pruh vlevo a nahoře (#fff), tmavý vpravo a dole (#555) */
+  box-shadow: inset -4px -4px #555, inset 4px 0px #fff;
+  
+  /* Typický stín pod textem */
+  text-shadow: 2px 2px #3f3f3f;
+  
+  font-family: 'VT323', monospace; /* Pokud máš pixelové písmo */
+  image-rendering: pixelated;
 }
 
 .task-book {
+  position: absolute;
+  width: 48%;
+  top:25%;
+  left:25%;
   background: #f1f1f1;
   border: 4px solid #000;
   padding: 20px;
@@ -234,4 +273,59 @@
   padding: 50px;
   font-size: 2rem;
   color: #55ff55;
+}
+
+/* Společné styly pro navigační šipky */
+.previous-scene, .next-scene {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%); /* Vycentrování na střed výšky */
+  width: 50px;
+  height: 50px;
+  background-color: #8b8b8b; /* Typická MC šedá */
+  border: 4px solid #000;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  image-rendering: pixelated;
+  
+  /* 3D efekt - světlý vršek a tmavý spodek */
+  box-shadow: inset -4px -4px #555, inset 4px 4px #dbdbdb;
+}
+
+/* Umístění vlevo/vpravo */
+.previous-scene {
+  left: 20px;
+  top: 20%;
+}
+
+.next-scene {
+  right: 20px;
+    top: 20%;
+
+}
+
+/* Hover efekt - v Minecraftu se tlačítka zvýrazní zeleně nebo světlou barvou */
+.previous-scene:hover, .next-scene:hover {
+  background-color: #55ff55; /* Minecraft zelená */
+  color: #000;
+  box-shadow: inset -4px -4px #388e3c, inset 4px 4px #c8e6c9;
+}
+
+/* Efekt zmáčknutí */
+.previous-scene:active, .next-scene:active {
+  transform: translateY(-50%) scale(0.95);
+  box-shadow: inset 4px 4px #555, inset -4px -4px #dbdbdb;
+}
+
+/* Vypnutý button (např. na první nebo poslední scéně) */
+.previous-scene:disabled, .next-scene:disabled {
+  background-color: #555;
+  cursor: not-allowed;
+  opacity: 0.5;
+  box-shadow: none;
 }

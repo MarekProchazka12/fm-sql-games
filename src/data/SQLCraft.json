@@ -2,23 +2,146 @@
   "createScript": "PRAGMA foreign_keys = ON; CREATE TABLE Inventory (inventory_id int NOT NULL PRIMARY KEY, size int NOT NULL); CREATE TABLE Item (item_id int NOT NULL PRIMARY KEY, name TEXT NOT NULL, type TEXT NOT NULL); CREATE TABLE Mob (mob_id int NOT NULL PRIMARY KEY, is_hostile INTEGER NOT NULL, type TEXT NOT NULL, health int NOT NULL); CREATE TABLE Recipe (recipe_id int NOT NULL PRIMARY KEY, result int NOT NULL); CREATE TABLE Structure (structure_id int NOT NULL PRIMARY KEY, type TEXT NOT NULL); CREATE TABLE Player (player_id int NOT NULL PRIMARY KEY, nickname TEXT NOT NULL, inventory_id int NOT NULL, x_coordinate int NOT NULL, y_coordinate int NOT NULL, FOREIGN KEY (inventory_id) REFERENCES Inventory (inventory_id)); CREATE TABLE Drops (count int NOT NULL, item_id int NOT NULL, mob_id int NOT NULL, CONSTRAINT Drops_pk PRIMARY KEY (item_id, mob_id), FOREIGN KEY (item_id) REFERENCES Item (item_id), FOREIGN KEY (mob_id) REFERENCES Mob (mob_id)); CREATE TABLE Ingredient (item_id int NOT NULL, recipe_id int NOT NULL, count int NOT NULL, CONSTRAINT Ingredient_pk PRIMARY KEY (recipe_id, item_id), FOREIGN KEY (item_id) REFERENCES Item (item_id), FOREIGN KEY (recipe_id) REFERENCES Recipe (recipe_id)); CREATE TABLE Inhabits (count int NOT NULL, structure_id int NOT NULL, mob_id int NOT NULL, CONSTRAINT Inhabits_pk PRIMARY KEY (mob_id, structure_id), FOREIGN KEY (mob_id) REFERENCES Mob (mob_id), FOREIGN KEY (structure_id) REFERENCES Structure (structure_id)); CREATE TABLE InventoryItem (count int NOT NULL, item_id int NOT NULL, inventory_id int NOT NULL, CONSTRAINT InventoryItem_pk PRIMARY KEY (inventory_id, item_id), FOREIGN KEY (inventory_id) REFERENCES Inventory (inventory_id), FOREIGN KEY (item_id) REFERENCES Item (item_id)); CREATE TABLE Loot (count int NOT NULL, item_id int NOT NULL, structure_id int NOT NULL, CONSTRAINT Loot_pk PRIMARY KEY (item_id, structure_id), FOREIGN KEY (item_id) REFERENCES Item (item_id), FOREIGN KEY (structure_id) REFERENCES Structure (structure_id)); CREATE TABLE Surrounding (surrounding_id int NOT NULL PRIMARY KEY, structure_id int NOT NULL, x_coordinate int NOT NULL, y_coordinate int NOT NULL, FOREIGN KEY (structure_id) REFERENCES Structure (structure_id));",
   "insertScript": "INSERT INTO Item (item_id, name, type) VALUES (1, 'Dirt', 'Block'), (2, 'Cobblestone', 'Block'), (3, 'Oak Log', 'Block'), (4, 'Oak Planks', 'Block'), (24, 'Sand', 'Block'), (25, 'Glass', 'Block'), (26, 'Stone', 'Block'), (27, 'Obsidian', 'Block'), (5, 'Diamond', 'Resource'), (6, 'Iron Ingot', 'Resource'), (7, 'Gold Ingot', 'Resource'), (8, 'Stick', 'Resource'), (21, 'String', 'Resource'), (22, 'Bone', 'Resource'), (23, 'Rotten Flesh', 'Resource'), (28, 'Gunpowder', 'Resource'), (29, 'Spider Eye', 'Resource'), (30, 'Ender Pearl', 'Resource'), (31, 'Blaze Rod', 'Resource'), (32, 'Netherite Scrap', 'Resource'), (9, 'Steak', 'Food'), (10, 'Apple', 'Food'), (11, 'Bread', 'Food'), (12, 'Golden Carrot', 'Food'), (33, 'Cooked Chicken', 'Food'), (34, 'Wheat', 'Food'), (35, 'Sugar', 'Food'), (13, 'Iron Sword', 'Weapon'), (14, 'Diamond Sword', 'Weapon'), (15, 'Bow', 'Weapon'), (16, 'Netherite Sword', 'Weapon'), (36, 'Crossbow', 'Weapon'), (17, 'Iron Pickaxe', 'Tool'), (18, 'Diamond Pickaxe', 'Tool'), (19, 'Shovel', 'Tool'), (20, 'Bucket', 'Tool'), (37, 'Fishing Rod', 'Tool'), (38, 'Shears', 'Tool'), (39, 'Clock', 'Tool'), (40, 'Compass', 'Tool'); INSERT INTO Inventory (inventory_id, size) VALUES (1, 36), (2, 36); INSERT INTO Player (player_id, nickname, inventory_id, x_coordinate, y_coordinate) VALUES (1, 'SQL_Hero', 1, 0, 0); INSERT INTO Mob (mob_id, is_hostile, type, health) VALUES (1, 1, 'Zombie', 20), (2, 1, 'Creeper', 20), (3, 1, 'Skeleton', 20), (4, 1, 'Enderman', 40), (5, 1, 'Spider', 16), (6, 1, 'Witch', 26), (7, 1, 'Warden', 500), (8, 1, 'Blaze', 20), (9, 1, 'Ghast', 10), (10, 1, 'Drowned', 20), (11, 0, 'Cow', 10), (12, 0, 'Pig', 10), (13, 0, 'Sheep', 8), (14, 0, 'Chicken', 4), (15, 0, 'Horse', 25), (16, 0, 'Iron Golem', 100), (17, 0, 'Villager', 20), (18, 0, 'Bee', 10), (19, 0, 'Fox', 10), (20, 0, 'Axolotl', 14); INSERT INTO Structure (structure_id, type) VALUES (1, 'Village'), (2, 'Desert Temple'), (3, 'Stronghold'), (4, 'Jungle Pyramid'), (5, 'Ocean Monument'), (6, 'Bastion Remnant'), (7, 'Nether Fortress'), (8, 'End City'), (9, 'Shipwreck'), (10, 'Pillager Outpost'), (11, 'Witch Hut'), (12, 'Mansion'), (13, 'Igloo'), (14, 'Mine Shaft'), (15, 'Amethyst Geode'), (16, 'Ancient City'), (17, 'Ocean Ruin'), (18, 'Ruined Portal'), (19, 'Buried Treasure'), (20, 'Desert Well'); INSERT INTO Surrounding (surrounding_id, structure_id, x_coordinate, y_coordinate) VALUES (1, 1, 150, 200), (2, 2, 50, 50), (3, 3, -1000, 450), (4, 14, 10, -15), (5, 2, 400, 400), (6, 16, 1200, -800), (7, 4, -300, -300), (8, 9, 20, 100), (9, 10, 450, 450), (10, 11, 200, 200), (11, 12, 5000, 5000), (12, 13, -200, 800), (13, 14, 30, 30), (14, 15, -50, -50), (15, 17, 100, -900), (16, 18, 55, 12), (17, 19, 10, 10), (18, 20, 500, 0), (19, 1, -150, -100), (20, 2, 5, 5); INSERT INTO InventoryItem (inventory_id, item_id, count) VALUES (1, 1, 64), (1, 2, 64), (1, 3, 32), (1, 4, 16), (1, 5, 1), (1, 6, 20), (1, 7, 5), (1, 8, 40), (1, 34, 10), (1, 10, 2), (1, 9, 5), (1, 21, 15), (1, 22, 10), (1, 23, 30), (1, 28, 5), (1, 13, 1), (1, 17, 1), (1, 20, 1), (1, 24, 12), (1, 26, 64), (1, 30, 2), (1, 31, 1), (1, 32, 0), (1, 40, 1); INSERT INTO Loot (count, item_id, structure_id) VALUES (3, 5, 2), (10, 7, 2), (5, 6, 2), (8, 6, 14), (10, 8, 14), (5, 11, 14),(2, 5, 16), (5, 32, 16), (10, 18, 16), (1, 14, 16), (1, 18, 3), (5, 11, 3), (2, 7, 3),(15, 6, 9), (10, 7, 9), (5, 10, 9),(1, 12, 6), (10, 7, 6),(1, 16, 8), (5, 5, 8), (20, 1, 20), (5, 6, 17), (2, 20, 17); INSERT INTO Inhabits (count, structure_id, mob_id) VALUES (10, 1, 17), (2, 1, 11), (3, 1, 12), (2, 1, 13), (2, 1, 16), (5, 10, 1), (5, 10, 3), (2, 10, 5), (1, 10, 2), (1, 16, 7), (8, 16, 4), (12, 16, 1), (10, 16, 3), (4, 16, 10), (20, 14, 1), (15, 14, 3), (10, 14, 5), (5, 7, 8), (3, 7, 1), (2, 7, 9), (10, 8, 4), (1, 8, 16), (5, 12, 6), (5, 12, 1), (5, 12, 3), (2, 4, 1), (2, 4, 3), (1, 4, 5), (3, 11, 6), (1, 11, 1), (5, 6, 8), (5, 6, 1); INSERT INTO Drops (count, item_id, mob_id) VALUES (2, 23, 1), (1, 6, 1), (2, 28, 2), (2, 8, 3), (1, 5, 4), (1, 21, 4), (2, 21, 5), (2, 10, 6), (1, 20, 6), (5, 5, 7), (10, 22, 7), (2, 9, 11), (2, 22, 3), (2, 9, 12), (1, 21, 13), (1, 10, 14), (1, 7, 8), (3, 6, 16), (1, 23, 10), (1, 22, 9), (2, 12, 17), (1, 5, 16); INSERT INTO Recipe (recipe_id, result) VALUES (1, 14), (2, 13), (3, 18), (4, 17), (5, 15), (6, 11), (7, 12),(8, 20), (9, 16), (10, 4), (11, 36),(12, 37),(13, 25),(14, 40), (15, 39), (16, 27), (17, 29); INSERT INTO Ingredient (recipe_id, item_id, count) VALUES (1, 5, 2), (1, 8, 1), (2, 6, 2), (2, 8, 1), (3, 5, 3), (3, 8, 2), (4, 6, 3), (4, 8, 2), (5, 8, 3), (5, 21, 3), (6, 34, 3), (7, 7, 8), (7, 10, 1), (8, 6, 3), (9, 14, 1), (9, 32, 1), (10, 3, 1), (11, 8, 3), (11, 21, 2), (11, 6, 1), (12, 8, 3), (12, 21, 2), (13, 24, 1), (14, 6, 4), (14, 28, 1), (15, 7, 4), (15, 28, 1), (16, 28, 5), (16, 24, 4), (17, 29, 1), (17, 35, 1);",
   "number_of_scenes" : 20,
-  "scenes":[
+  "scenes": [
     {
-      "id":1,
-      "img":"",
-      "story":"",
-      "prompt":"",
-      "answer":""
-
+      "id": 1,
+      "img": "1.jpg",
+      "story": "Otevíráš oči. Kolem tebe je jen nekonečná pláň složená z kostek. První věc, která tě napadne, je, zda v tomto rozlehlém světě je ještě někdo další.",
+      "prompt": "Vypiš všechny hráče, kteří se nacházejí v tomto světě.",
+      "answer": "SELECT * FROM Player;"
     },
     {
-      "id":2,
-      "img":"",
-      "story":"",
-      "prompt":"",
-      "answer":""
-
+      "id": 2,
+      "img": "2.jpg",
+      "story": "Zdá se, že v tomto světě jsi skutečně sám. Ale co okolí? Postavíš se na nejvyšší kopec a rozhlížíš se do dálky. Na obzoru vidíš obrysy podivných staveb a úkazů. Zajímá tě co všechno je konkrétně v tvé blízkosti.",
+      "prompt": "Koukni se co máš kolem sebe (tabulka Surrounding).",
+      "answer": "SELECT * FROM Surrounding;"
+    },
+    {
+      "id": 3,
+      "img": "3.jpg",
+      "story": "Dlouhá chůze a průzkum si vybraly svou daň. Začíná ti kručet v břiše a tvůj ukazatel hladu povážlivě klesá. Rychle otevíráš svůj manuál přežití, abys zjistil, které z předmětů v tomto světě jsou bezpečné ke konzumaci.",
+      "prompt": "Jaké itemy můžeš jíst? (typ 'Food')",
+      "answer": "SELECT * FROM Item WHERE type = 'Food';"
+    },
+    {
+      "id": 4,
+      "img": "4.jpg",
+      "story": "Slunce začíná zapadat a obloha se barví do fialova. S přicházející tmou se z jeskyní a lesů ozývají děsivé zvuky. Víš, že ne všechno v tomto světě je přátelské. Musíš si zjistit jména nestvůr.",
+      "prompt": "Přišla noc. Jakých mobů by ses měl bát? (hostilní mobové)",
+      "answer": "SELECT type FROM Mob WHERE is_hostile = 1;"
+    },
+    {
+      "id": 5,
+      "img": "5.jpg",
+      "story": "Vykoukneš z provizorního úkrytu a vidíš, že les je plný svítících očí. Zdá se, že jich je mnohem víc, než jsi čekal. Přepadne tě úzkost a chceš znát přesné číslo.",
+      "prompt": "Je jich hrozně moc! Kolik monster přesně čelíš?",
+      "answer": "SELECT COUNT(*) AS Pocet_Monster FROM Mob WHERE is_hostile = 1;"
+    },
+    {
+      "id": 6,
+      "img": "6.jpg",
+      "story": "„To bylo o fous!“ vydechneš si, když odrazíš první nepřátele. Takhle to dál nejde, potřebuješ pořádnou zeď na obranu. Musíš vědět, kolik stavebních bloků máš v inventáři.",
+      "prompt": "Kolik bloků máme celkem v inventáři?",
+      "answer": "SELECT SUM(II.count) AS Celkem_Bloku FROM InventoryItem II JOIN Item I ON II.item_id = I.item_id WHERE I.type = 'Block';"
+    },
+    {
+      "id": 7,
+      "img": "7.jpg",
+      "story": "Opevnění stojí a ocitáš se v bezpečí. Teď začínáš přemýšlet o expanzi. Zajímá tě, které z vzdálených struktur jsou nejvíce nebezpečné a obývá je velké množství druhů nestvůr.",
+      "prompt": "Vypiš typy struktur, kde bydlí aspoň 3 různí mobové.",
+      "answer": "SELECT S.type FROM Structure S JOIN Inhabits I ON S.structure_id = I.structure_id GROUP BY S.type HAVING COUNT(I.mob_id) > 2;"
+    },
+    {
+      "id": 8,
+      "img": "8.jpg",
+      "story": "Pasivní obrana nestačí. Pokud chceš získat diamanty, musíš vyrazit do hlubin. Potřebuješ zbraně i nářadí. Udělej si ucelený seznam všeho, co lze vyrobit.",
+      "prompt": "Seznam všech zbraní a všech nástrojů (UNION).",
+      "answer": "SELECT name, 'Zbran' AS Kategorie FROM Item WHERE type = 'Weapon' UNION SELECT name, 'Nastroj' AS Kategorie FROM Item WHERE type = 'Tool';"
+    },
+    {
+      "id": 9,
+      "img": "9.jpg",
+      "story": "Proč všechno vyrábět, když svět je plný pokladů? Rozhodneš se porovnat předměty v truhlách ruin s těmi, co už máš. Chceš vidět jen to, co ti ještě chybí.",
+      "prompt": "Jaké předměty, které ještě nemáš, můžeš získat ze struktur? (EXCEPT)",
+      "answer": "SELECT I.name FROM Loot L JOIN Item I ON L.item_id = I.item_id EXCEPT SELECT I.name FROM InventoryItem II JOIN Item I ON II.item_id = I.item_id;"
+    },
+    {
+      "id": 10,
+      "img": "10.jpg",
+      "story": "Provádíš poslední důkladnou revizi. Chceš vidět kompletní katalog všech věcí a u nich černé na bílém, kolik kusů vlastníš, i kdyby to měla být nula.",
+      "prompt": "Vypiš všechny předměty a množství v tvém batohu (použij LEFT JOIN).",
+      "answer": "SELECT I.name, IFNULL(II.count, 0) AS Pocet_v_batohu FROM Item I LEFT JOIN InventoryItem II ON I.item_id = II.item_id;"
+    },
+    {
+      "id": 11,
+      "img": "11.jpg",
+      "story": "Diamanty jsou vzácné. Kolují legendy, že některé mocné bytosti je střeží přímo ve svém nitru. Pokus se vyvolat jména monster, která mohou drahokam zanechat.",
+      "prompt": "Najdi jména mobů, kteří po smrti upouštějí diamanty.",
+      "answer": "SELECT type FROM Mob WHERE mob_id IN (SELECT mob_id FROM Drops WHERE item_id = (SELECT item_id FROM Item WHERE name = 'Diamond'));"
+    },
+    {
+      "id": 12,
+      "img": "12.jpg",
+      "story": "Lov na moby je riskantní. Rozkládáš mapy dřívějších průzkumníků. Diamanty se občas generují v truhlách chrámů. Prověř záznamy o těchto místech.",
+      "prompt": "Vypiš struktury, které obsahují alespoň jeden diamant jako Loot.",
+      "answer": "SELECT type FROM Structure S WHERE EXISTS (SELECT 1 FROM Loot L WHERE L.structure_id = S.structure_id AND L.item_id = (SELECT item_id FROM Item WHERE name = 'Diamond'));"
+    },
+    {
+      "id": 13,
+      "img": "13.jpg",
+      "story": "Čím blíže k diamantům, tím silnější strážci. Musíš identifikovat skutečné predátory – ty, co mají více životů než je průměr a obývají více struktur.",
+      "prompt": "Najdi silné moby (zdraví > průměr) vyskytující se ve více než jedné struktuře.",
+      "answer": "SELECT type, health FROM Mob WHERE health > (SELECT AVG(health) FROM Mob) AND mob_id IN (SELECT mob_id FROM Inhabits GROUP BY mob_id HAVING COUNT(structure_id) > 1);"
+    },
+    {
+      "id": 14,
+      "img": "14.jpg",
+      "story": "Hledáš skutečnou elitu mezi monstry. Chceš ty hostilní stvůry, které jsou tak silné, že i ten nejslabší z nich má více životů než jakékoliv mírumilovné zvíře.",
+      "prompt": "Kteří hostilní mobové mají více životů než KAŽDÝ jeden pasivní mob?",
+      "answer": "SELECT type, health FROM Mob WHERE is_hostile = 1 AND health > (SELECT MAX(health) FROM Mob WHERE is_hostile = 0);"
+    },
+    {
+      "id": 15,
+      "img": "15.jpg",
+      "story": "Nechceš riskovat v každé polorozpadlé chatrči. Hledáš místa, kde celkový součet předmětů v truhlách přesahuje deset kusů. To je tvoje mapa bohatství.",
+      "prompt": "Najdi souřadnice (X, Y) struktur, které obsahují celkem více než 10 kusů lootu.",
+      "answer": "SELECT S.x_coordinate, S.y_coordinate, ST.type FROM Surrounding S JOIN Structure ST ON S.structure_id = ST.structure_id JOIN Loot L ON ST.structure_id = L.structure_id GROUP BY S.x_coordinate, S.y_coordinate, ST.type HAVING SUM(L.count) > 10;"
+    },
+    {
+      "id": 16,
+      "img": "16.jpg",
+      "story": "Nejmocnější nástroje vyžadují ingredience vybojované v zápase. Filtruješ recepty, které jsou přímo závislé na kořisti z hostilních monster.",
+      "prompt": "Vypiš recepty (výsledky), které vyžadují předmět dropovaný pouze hostilními moby.",
+      "answer": "SELECT DISTINCT I.name FROM Recipe R JOIN Ingredient ING ON R.recipe_id = ING.recipe_id JOIN Item I ON R.result = I.item_id WHERE ING.item_id IN (SELECT item_id FROM Drops D JOIN Mob M ON D.mob_id = M.mob_id WHERE M.is_hostile = 1 EXCEPT SELECT item_id FROM Loot);"
+    },
+    {
+      "id": 17,
+      "img": "17.jpg",
+      "story": "Teď jde o to, kolik strážců poklady hlídá. Analyzuješ každou strukturu a hledáš ty, které jsou doslova zamořené monstry. Označ si je červeným křížkem.",
+      "prompt": "Vypiš typ struktury a počet hostilních mobů, pokud jich je tam víc než 1.",
+      "answer": "SELECT ST.type, COUNT(I.mob_id) AS Pocet_monster FROM Structure ST JOIN Inhabits I ON ST.structure_id = I.structure_id JOIN Mob M ON I.mob_id = M.mob_id WHERE M.is_hostile = 1 GROUP BY ST.type HAVING COUNT(I.mob_id) > 1;"
+    },
+    {
+      "id": 18,
+      "img": "18.jpg",
+      "story": "Musíš vyprázdnit batoh. Nechceš se ale zbavit ničeho cenného. Provedeš inventuru a vyfiltruješ ty suroviny, kterých máš nadprůměrné množství a dají se použít v receptech.",
+      "prompt": "Názvy a počty předmětů v inventáři (count > průměr), které jsou ingrediencemi.",
+      "answer": "SELECT I.name, II.count FROM InventoryItem II JOIN Item I ON II.item_id = I.item_id WHERE II.count > (SELECT AVG(count) FROM InventoryItem) AND I.item_id IN (SELECT item_id FROM Ingredient);"
+    },
+    {
+      "id": 19,
+      "img": "19.jpg",
+      "story": "Už máš dost boje. Hledáš snadnější cestu – strukturu, která skrývá diamanty, ale je naprosto opuštěná. Propočítáváš vzdálenost k těmto tichým místům.",
+      "prompt": "Najdi blízké struktury (do 500 bloků) s diamanty, kde nikdo nebydlí.",
+      "answer": "SELECT ST.type, S.x_coordinate, S.y_coordinate FROM Player P, Structure ST JOIN Surrounding S ON ST.structure_id = S.structure_id JOIN Loot L ON ST.structure_id = L.structure_id LEFT JOIN Inhabits INH ON ST.structure_id = INH.structure_id WHERE P.nickname = 'SQL_Hero' AND L.item_id = (SELECT item_id FROM Item WHERE name = 'Diamond') AND INH.mob_id IS NULL AND ((S.x_coordinate - P.x_coordinate)*(S.x_coordinate - P.x_coordinate) + (S.y_coordinate - P.y_coordinate)*(S.y_coordinate - P.y_coordinate)) <= 250000;"
+    },
+    {
+      "id": 20,
+      "img": "20.jpg",
+      "story": "Vracíš se do pevnosti. Přistoupíš k pracovnímu stolu. Než udeříš kladivem, provedeš finální kalkulaci. Pokud seznam chybějících položek zůstane prázdný, legenda je na světě.",
+      "prompt": "Zjisti, které suroviny ti CHYBÍ pro výrobu Diamantového meče.",
+      "answer": "SELECT I.name FROM Ingredient ING JOIN Recipe R ON ING.recipe_id = R.recipe_id JOIN Item Result ON R.result = Result.item_id JOIN Item I ON ING.item_id = I.item_id WHERE Result.name = 'Diamond Sword' EXCEPT SELECT I.name FROM InventoryItem INV JOIN Item I ON INV.item_id = I.item_id;"
     }
-
   ]
 }
