@@ -4,20 +4,31 @@ html, body, #root {
   width: 100%;
   height: 100%;
   overflow: hidden;
+
+}
+
+
+
+
+.page-container {
+  display: flex;
+  flex-direction: row; /* Prvky vedle sebe */
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  font-family: 'Courier New';
 }
 
 
 .game-screen {
-  position: fixed; /* Místo absolute/relative použijeme fixed */
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+  flex: 1; 
+  height: 100%;
+  position: relative;
+  background-size: cover;
+  background-position: center;
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* Rozmístí info-bar nahoru a bottom-area dolů */
-  box-sizing: border-box;
-  font-family: '/fonts/Minecraft.ttf', 'Courier New', monospace;
+  justify-content: space-between;
 
 }
 
@@ -34,22 +45,16 @@ html, body, #root {
 
 
 .side-overlay {
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 60%;
+  width: 45%; /* Pevná šířka (např. 40% obrazovky) */
+  min-width: 350px;
   background: #c6c6c6;
   border-right: 4px solid #000;
-  z-index: 150;
-  transform: translateX(-100%);
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  padding: 80px 20px 20px 80px;
-  box-sizing: border-box;
-
+  position: relative; /* Změna z absolute na relative */
   display: flex;
   flex-direction: column;
-  overflow: hidden; 
+  padding: 20px; /* Padding už nemusí být tak velký, není to overlay */
+  box-sizing: border-box;
+  transform: none; /* Zrušení posunu */
 }
 
 .overlay-content {
@@ -120,8 +125,10 @@ html, body, #root {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  z-index: 200; 
+  z-index: 200;
 }
+
+
 
 
 
