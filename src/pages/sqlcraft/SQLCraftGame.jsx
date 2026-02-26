@@ -79,12 +79,13 @@ export default function SQLCraftGame() {
       }
       setError(null);
       console.log(res)
-      if(_.isEqual(res, null)){
+      if(!(_.isEqual(res, null))){
         setResult(res);
       }
       else{
         setError("Nic tu není :/")
       }
+      
       
       
     } catch (e) {
@@ -99,7 +100,7 @@ export default function SQLCraftGame() {
   if (!db) return <div className="loading">Načítám svět...</div>;
 
   return (
-    <div class="page-container">
+    <div className="page-container">
       <div className="side-toolbar">
           <button 
             className={`tool-square`} 
