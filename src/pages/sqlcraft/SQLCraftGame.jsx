@@ -48,6 +48,22 @@ export default function SQLCraftGame() {
 
       }
       const sceneConfirmTable = db.exec(currSceneData.answer);
+
+      if (!res || res.length === 0 || !sceneConfirmTable || sceneConfirmTable.length === 0) {
+        return false;
+    }
+    if(!(_.isEqual(res, null))){
+      if(res[0].columns.length !== sceneConfirmTable[0].columns.length){
+        return false;
+      }
+
+      if(res[0].values.length !== sceneConfirmTable[0].values.length){
+        return false;
+      }  
+    }
+     
+      
+
       if(_.isEqual(res,sceneConfirmTable)){
         return true;
       }
