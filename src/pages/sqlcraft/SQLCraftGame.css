@@ -12,7 +12,7 @@ html, body, #root {
 
 .page-container {
   display: flex;
-  flex-direction: row; /* Prvky vedle sebe */
+  flex-direction: row; 
   width: 100vw;
   height: 100vh;
   overflow: hidden;
@@ -45,16 +45,16 @@ html, body, #root {
 
 
 .side-overlay {
-  width: 45%; /* Pevná šířka (např. 40% obrazovky) */
+  width: 45%; 
   min-width: 350px;
   background: #c6c6c6;
   border-right: 4px solid #000;
-  position: relative; /* Změna z absolute na relative */
+  position: relative; 
   display: flex;
   flex-direction: column;
-  padding: 20px; /* Padding už nemusí být tak velký, není to overlay */
+  padding: 20px; 
   box-sizing: border-box;
-  transform: none; /* Zrušení posunu */
+  transform: none; 
 }
 
 .overlay-content {

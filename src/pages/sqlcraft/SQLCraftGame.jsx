@@ -3,6 +3,7 @@ import initSqlJs from 'sql.js';
 import './SQLCraftGame.css';
 import gameData from '../../data/SQLCraft.json' 
 import schema from '../../assets/SQLCraft_scheme.png'
+import _ from 'lodash'
 
 export default function SQLCraftGame() {
 
@@ -27,7 +28,57 @@ export default function SQLCraftGame() {
       database.run(gameData.insertScript);
       setDb(database);
     });
+    
   }, []);
+
+
+  
+
+  const isSuccesful = (res) => {
+     let trimmedUser = query.toLowerCase().trim();
+      let trimmedAnswer = (currSceneData.answer).toLowerCase().trim();
+      if(!trimmedUser.endsWith(";")){
+        trimmedUser += ";";
+      }
+      if(trimmedUser == trimmedAnswer){
+
+        return true;
+
+      }
+      const sceneConfirmTable = db.exec(currSceneData.answer);
+
+      if (!res || res.length === 0 || !sceneConfirmTable || sceneConfirmTable.length === 0) {
+        return false;
+    }
+    if(!(_.isEqual(res, null))){
+      if(res[0].columns.length !== sceneConfirmTable[0].columns.length){
+        return false;
+      }
+
+      if(res[0].values.length !== sceneConfirmTable[0].values.length){
+        return false;
+      }  
+    }
+     
+      
+
+      if(_.isEqual(res,sceneConfirmTable)){
+        return true;
+      }
+      return false;
+  }
+
+  function nextScene(){
+    setCurrentScene(prev => prev + 1);
+  }
+
+  function prevScene(){
+    setCurrentScene(prev => prev - 1);
+  }
+
+
+
+
 
   const runSql = () => {
     setActiveOverlay('table')
@@ -35,22 +86,22 @@ export default function SQLCraftGame() {
     setResult(null);
     try {
       const res = db.exec(query);
-      let trimmedUser = query.toLowerCase().trim();
-      let trimmedAnswer = (currSceneData.answer).toLowerCase().trim();
-      if(!trimmedUser.endsWith(";")){
-        trimmedUser += ";";
-      }
-      
-      if(trimmedUser == trimmedAnswer){
-        console.log("prvni if")
+      if(isSuccesful(res)){
         if((currentScene -1)  == lastSuccessScene  ){
           setLastSuccessScene(prev => prev + 1)
-          console.log("druhy if")
-          console.log(lastSuccessScene)
         }
       }
-      setResult(res);
       setError(null);
+      console.log(res)
+      if(!(_.isEqual(res, null))){
+        setResult(res);
+      }
+      else{
+        setError("Nic tu není :/")
+      }
+      
+      
+      
     } catch (e) {
       if(hearts != 0){
           setHearts(hearts-1);
@@ -63,7 +114,7 @@ export default function SQLCraftGame() {
   if (!db) return <div className="loading">Načítám svět...</div>;
 
   return (
-    <div class="page-container">
+    <div className="page-container">
       <div className="side-toolbar">
           <button 
             className={`tool-square`} 
@@ -130,12 +181,12 @@ export default function SQLCraftGame() {
         <div className="info-bar">
           <span>Hráč: Steve</span> | <span>{"💔".repeat(9-hearts)}{"❤️".repeat(hearts)}</span>  
         </div>
-        {currentScene > 1 &&(<button className="previous-scene" onClick={()=>setCurrentScene(prev => prev -1)}>
+        {currentScene > 1 &&(<button className="previous-scene" onClick={prevScene}>
             ◀
         </button>)}
 
         {currentScene <= lastSuccessScene &&
-        <button className="next-scene" onClick={()=>setCurrentScene(prev => prev +1)}>
+        <button className="next-scene" onClick={nextScene}>
             ▶
         </button>}
         <div className="task-book">
