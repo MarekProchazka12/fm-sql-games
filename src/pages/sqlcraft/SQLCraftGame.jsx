@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
 import initSqlJs from 'sql.js';
 import './SQLCraftGame.css';
 import gameData from '../../data/SQLCraft.json' 
@@ -7,8 +6,7 @@ import schema from '../../assets/SQLCraft_scheme.png'
 import _ from 'lodash'
 
 export default function SQLCraftGame() {
-  const location = useLocation();
-  const difficulty = location.state?.difficulty || 'easy';
+
   const [activeOverlay, setActiveOverlay] = useState('table');
   
   const [db, setDb] = useState(null);
@@ -181,7 +179,7 @@ export default function SQLCraftGame() {
 
       <div className="game-screen" style={{ backgroundImage: `url("/pageAssets/SQLCraft/scenes/${currSceneData.img}")`, backgroundSize:"cover", backgroundPosition:"center" }}>
         <div className="info-bar">
-          <span>Hráč: Steve</span> | <span>Obtížnost: {difficulty}</span>  | <span>{"💔".repeat(9-hearts)}{"❤️".repeat(hearts)}</span>  
+          <span>Hráč: Steve</span> | <span>{"💔".repeat(9-hearts)}{"❤️".repeat(hearts)}</span>  
         </div>
         {currentScene > 1 &&(<button className="previous-scene" onClick={prevScene}>
             ◀
