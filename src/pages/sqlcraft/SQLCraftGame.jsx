@@ -4,6 +4,7 @@ import './SQLCraftGame.css';
 import gameData from '../../data/SQLCraft.json' 
 import schema from '../../assets/SQLCraft_scheme.png'
 import _ from 'lodash'
+import { supabase } from '../../supabaseClient'
 
 export default function SQLCraftGame() {
 
@@ -32,7 +33,23 @@ export default function SQLCraftGame() {
   }, []);
 
 
-  
+  const logQuery = async (queryData) => {
+  const { data, error } = await supabase
+    .from('query_logs') 
+    .insert([
+      { 
+        game_name: queryData.gameName,
+        scene_id: queryData.sceneId,
+        query: queryData.query,
+        is_correct: queryData.isCorrect,
+        error: queryData.error || null
+      }
+    ])
+
+  if (error) {
+    console.error('Chyba při logování:', error.message)
+  }
+}
 
   const isSuccesful = (res) => {
      let trimmedUser = query.toLowerCase().trim();
@@ -86,7 +103,8 @@ export default function SQLCraftGame() {
     setResult(null);
     try {
       const res = db.exec(query);
-      if(isSuccesful(res)){
+      const succesful = isSuccesful(res)
+      if(succesful){
         if((currentScene -1)  == lastSuccessScene  ){
           setLastSuccessScene(prev => prev + 1)
         }
@@ -100,6 +118,15 @@ export default function SQLCraftGame() {
         setError("Nic tu není :/")
       }
       
+      const queryData = {
+          gameName: "SQLCraft",
+          sceneId: currentScene,
+          query: query,
+          isCorrect: succesful,
+          error: error
+      }
+
+      logQuery(queryData);
       
       
     } catch (e) {
