@@ -67,7 +67,7 @@ export default function SQLCraftGame() {
       if (!res || res.length === 0 || !sceneConfirmTable || sceneConfirmTable.length === 0) {
         return false;
     }
-    if(!(_.isEqual(res, null))){
+    
       if(res[0].columns.length !== sceneConfirmTable[0].columns.length){
         return false;
       }
@@ -75,7 +75,7 @@ export default function SQLCraftGame() {
       if(res[0].values.length !== sceneConfirmTable[0].values.length){
         return false;
       }  
-    }
+    
      
       
 
@@ -101,41 +101,44 @@ export default function SQLCraftGame() {
     setActiveOverlay('table')
     setError(null);
     setResult(null);
+
+    let currentError = null;
+    let isCorrect = false;
     try {
       const res = db.exec(query);
-      const succesful = isSuccesful(res)
-      if(succesful){
+      isCorrect = isSuccesful(res)
+      if(isCorrect){
         if((currentScene -1)  == lastSuccessScene  ){
           setLastSuccessScene(prev => prev + 1)
         }
       }
       setError(null);
-      console.log(res)
-      if(!(_.isEqual(res, null))){
+      if(!(_.isEqual(res, []))){
         setResult(res);
       }
       else{
+        currentError = "Nic tu není :/"
         setError("Nic tu není :/")
       }
       
-      const queryData = {
-          gameName: "SQLCraft",
-          sceneId: currentScene,
-          query: query,
-          isCorrect: succesful,
-          error: error
-      }
-
-      logQuery(queryData);
       
       
     } catch (e) {
       if(hearts != 0){
           setHearts(hearts-1);
       }
-      
-      setError(e.message);
+      currentError = e.message;
+      setError(currentError);
     }
+    const queryData = {
+      gameName: "SQLCraft",
+      sceneId: currentScene,
+      query: query,
+      isCorrect: isCorrect,
+      error: currentError
+    };
+
+    logQuery(queryData);
   };
 
   if (!db) return <div className="loading">Načítám svět...</div>;
