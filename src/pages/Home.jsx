@@ -12,8 +12,9 @@ const games = [
   {
     id: 'tulescape',
     title: 'Escape from TUL',
-    description: 'Uteč z TULky',
-    image: ''
+    description: 'Oprav s pomocí SQL dotazů svou diplomovou práci a unikni z informačního systému.',
+    image: 'pageAssets/TULEscape/scenes/1.jpg',
+    active: true
   }
 ]
 
