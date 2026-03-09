@@ -1,21 +1,25 @@
-.tul-gui-container{
+.tul-gui-container {
     height: 100vh;
     background: black;
-    background-image: linear-gradient(rgba(0, 255, 0, 0.1) 50%, transparent 50%), linear-gradient(90deg, rgba(0, 255, 0, 0.05), transparent 95%);
-    background-size: 100% 4px, 4px 100%;
+    background-image:
+        linear-gradient(rgba(0, 255, 0, 0.1) 50%, transparent 50%),
+        linear-gradient(90deg, rgba(0, 255, 0, 0.05), transparent 95%);
+    background-size:
+        100% 4px,
+        4px 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     font-family: 'Courier New', monospace;
 }
 
-.tul-modal{
+.tul-modal {
     background: #050505;
     border: 2px solid #33ff33;
     padding: 30px;
     width: 500px;
     text-align: center;
-    box-shadow: 0 0 20px rgba(51,255,51,0.4);
+    box-shadow: 0 0 20px rgba(51, 255, 51, 0.4);
 }
 
 .tul-modal h1 {
