@@ -5,6 +5,9 @@ import gameData from '../../data/SQLCraft.json';
 import schema from '../../assets/SQLCraft_scheme.png';
 import _ from 'lodash';
 import { supabase } from '../../supabaseClient';
+import Editor from 'react-simple-code-editor';
+import { highlight, languages } from 'prismjs/components/prism-core';
+import 'prismjs/components/prism-sql';
 
 export default function SQLCraftGame() {
     const [activeOverlay, setActiveOverlay] = useState('table');
@@ -21,6 +24,8 @@ export default function SQLCraftGame() {
         setActiveOverlay(type);
     };
 
+    
+
     useEffect(() => {
         initSqlJs({ locateFile: (f) => `/${f}` }).then((SQL) => {
             const database = new SQL.Database();
@@ -29,6 +34,15 @@ export default function SQLCraftGame() {
             setDb(database);
         });
     }, []);
+
+    useEffect(() => {
+        const editor = document.querySelector('.input-area');
+        if (editor) {
+            setTimeout(() => {
+            editor.scrollTop = editor.scrollHeight;
+            }, 0);
+        }
+    }, [query]);
 
     const logQuery = async (queryData) => {
         const { error } = await supabase.from('query_logs').insert([
@@ -223,12 +237,13 @@ export default function SQLCraftGame() {
                     </p>
                 </div>
                 <div className="bottom-area">
-                    <textarea
-                        spellCheck="false"
-                        className="input-area"
-                        value={query}
-                        onChange={(e) => setQuery(e.target.value)}
-                    />
+                        <Editor
+                            value={query}
+                            onValueChange={code => setQuery(code)}
+                            highlight={code => highlight(code, languages.sql)}
+                            padding={15}
+                            className="input-area" 
+                        />
                     <button onClick={runSql} className="send-btn">
                         PROVÉST DOTAZ
                     </button>

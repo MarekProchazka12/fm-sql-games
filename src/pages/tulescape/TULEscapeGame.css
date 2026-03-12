@@ -160,12 +160,60 @@ body,
     width: 48%;
     height: 120px;
     background: #000;
-    color: #33ff33;
-    border: 4px solid #33ff33;
+    color: white;
+    border: 4px solid #7c7c7c;
     padding: 15px;
     font-family: 'Courier New', monospace;
     font-size: 1.1rem;
     outline: none;
+    height: '120px';
+    box-sizing: border-box;
+    border: 4px solid #555;
+    height: 150px !important;
+    display: block !important;
+    background-attachment: local;
+    width: '100%';
+    overflow: auto !important; 
+    position: relative;
+    scroll-behavior: smooth;
+}
+
+
+.tul-input-area::-webkit-scrollbar {
+  width: 12px;
+  height: 12px; /* Musíš nastavit i výšku pro vodorovný scroll! */
+}
+
+/* 2. Vynucení barvy pro vodorovnou dráhu */
+.tul-input-area::-webkit-scrollbar-track {
+  background: #222 !important;
+}
+
+/* 3. Oprava vnitřních prvků, aby "nepřetékaly" a neměly bílé okraje */
+.tul-input-area textarea, 
+.tul-input-area pre {
+  background: transparent !important; /* Pozadí musí být průhledné, aby platila černá z .input-area */
+  margin: 0 !important;
+  border: none !important;
+  outline: none !important;
+  /* Zamezí zobrazení vnitřních scrollbarů, které dělají nepořádek */
+  overflow: hidden !important; 
+}
+
+.tul-input-area textarea::-webkit-scrollbar,
+.tul-input-area::-webkit-scrollbar {
+  width: 12px;
+}
+
+.tul-input-area textarea::-webkit-scrollbar-track,
+.tul-input-area::-webkit-scrollbar-track {
+  background: #222;
+}
+
+.tul-input-area textarea::-webkit-scrollbar-thumb,
+.tul-input-area::-webkit-scrollbar-thumb {
+  background: #8b8b8b;
+  border: 2px solid #000;
 }
 
 .tul-info-bar {
@@ -291,4 +339,26 @@ body,
     cursor: not-allowed;
     opacity: 0.5;
     box-shadow: none;
+}
+
+
+/*CSS PRO TEXTAREA*/
+.token.keyword {
+  color: #55ff55 !important;
+  font-weight: bold;
+}
+
+/* Stringy a hodnoty v uvozovkách */
+.token.string {
+  color: #ffff55 !important; /* Žlutá */
+}
+
+/* Názvy tabulek nebo funkcí */
+.token.function {
+  color: #55ffff !important;
+}
+
+/* Čísla */
+.token.number {
+  color: #ff55ff !important; 
 }

@@ -5,6 +5,9 @@ import gameData from '../../data/TULEscape.json';
 import schema from '../../assets/TULEscape_scheme.png';
 import _ from 'lodash';
 import { supabase } from '../../supabaseClient';
+import Editor from 'react-simple-code-editor';
+import { highlight, languages } from 'prismjs/components/prism-core';
+import 'prismjs/components/prism-sql';
 
 export default function TULEscapeGame() {
     const [activeOverlay, setActiveOverlay] = useState('table');
@@ -19,6 +22,15 @@ export default function TULEscapeGame() {
     const toggleOverlay = (type) => {
         setActiveOverlay(type);
     };
+
+     useEffect(() => {
+        const editor = document.querySelector('.tul-input-area');
+        if (editor) {
+            setTimeout(() => {
+            editor.scrollTop = editor.scrollHeight;
+            }, 0);
+        }
+    }, [query]);
 
     useEffect(() => {
         initSqlJs({ locateFile: (f) => `/${f}` }).then((SQL) => {
@@ -198,12 +210,13 @@ export default function TULEscapeGame() {
                 </div>
 
                 <div className="tul-bottom-area">
-                    <textarea
-                        spellCheck="false"
-                        className="tul-input-area"
-                        value={query}
-                        onChange={(e) => setQuery(e.target.value)}
-                    />
+                    <Editor
+                            value={query}
+                            onValueChange={code => setQuery(code)}
+                            highlight={code => highlight(code, languages.sql)}
+                            padding={15}
+                            className="tul-input-area" 
+                        />
                     <button onClick={runSql} className="tul-send-btn">
                         PROVÉST DOTAZ
                     </button>
