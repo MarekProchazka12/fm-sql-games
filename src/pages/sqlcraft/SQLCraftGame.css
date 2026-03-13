@@ -406,3 +406,32 @@ body,
 .token.number {
   color: #ff55ff !important; 
 }
+
+.hint-intro {
+    margin-bottom: 15px;
+    font-style: italic;
+    color: #111;
+}
+
+.keyword-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.hint-item {
+    margin-bottom: 15px;
+    line-height: 1.5;
+    font-size: 0.95rem;
+}
+
+.hint-keyword {
+    background-color: #2b2b2b; 
+    color: #ff9d00; 
+    padding: 3px 6px;
+    border-radius: 4px;
+    font-family: 'Courier New', Courier, monospace;
+    margin-right: 8px;
+    border: 1px solid #444;
+    display: inline-block;
+}

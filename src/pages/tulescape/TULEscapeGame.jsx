@@ -8,6 +8,7 @@ import { supabase } from '../../supabaseClient';
 import Editor from 'react-simple-code-editor';
 import { highlight, languages } from 'prismjs/components/prism-core';
 import 'prismjs/components/prism-sql';
+import { sqlDictionary } from '../../data/sqlDictionary'
 
 export default function TULEscapeGame() {
     const [activeOverlay, setActiveOverlay] = useState('table');
@@ -65,15 +66,24 @@ export default function TULEscapeGame() {
         if (trimmedUser == trimmedAnswer) {
             return true;
         }
-        try {
-            const sceneConfirmTable = db.exec(currSceneData.confirmQuery);
-            if (!res || res.length === 0 || !sceneConfirmTable || sceneConfirmTable.length === 0) {
-                return false;
-            }
-            return _.isEqual(res, sceneConfirmTable);
-        } catch {
+        const sceneConfirmTable = db.exec(currSceneData.answer);
+
+        if (!res || res.length === 0 || !sceneConfirmTable || sceneConfirmTable.length === 0) {
             return false;
         }
+
+        if (res[0].columns.length !== sceneConfirmTable[0].columns.length) {
+            return false;
+        }
+
+        if (res[0].values.length !== sceneConfirmTable[0].values.length) {
+            return false;
+        }
+
+        if (_.isEqual(res, sceneConfirmTable)) {
+            return true;
+        }
+        return false;
     };
 
     const runSql = () => {
@@ -138,7 +148,24 @@ export default function TULEscapeGame() {
                     {activeOverlay === 'hint' && (
                         <div className="tul-content-box">
                             <h3>NÁPOVĚDA</h3>
-                            <p className="tul-hint-text">HINT HERE</p>
+                            {currSceneData.keywords && currSceneData.keywords.length > 0 ? (
+                                <div className="hint-content">
+                                    <p className="hint-intro">K vyřešení tohoto úkolu zkus použít tyto příkazy:</p>
+
+                                    <ul className="keyword-list">
+                                        {currSceneData.keywords.map((keyword, index) => (
+                                            <li key={index} className="hint-item">
+                                                <strong className="hint-keyword">{keyword}</strong>
+                                                <span className="hint-definition">
+                                                    {sqlDictionary[keyword] || " - (Definice chybí)"}
+                                                </span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            ) : (
+                                <p className="hint-text">Pro tuto úroveň není k dispozici žádná speciální nápověda.</p>
+                            )}
                         </div>
                     )}
                     {activeOverlay === 'table' && (
