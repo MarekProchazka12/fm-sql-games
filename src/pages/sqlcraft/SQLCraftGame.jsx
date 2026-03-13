@@ -98,6 +98,9 @@ export default function SQLCraftGame() {
         setCurrentScene((prev) => prev - 1);
     }
 
+    const badWords = ["drop","delete","insert","update","alter", "truncate", "grant","commit","rollback", "pragma", "attach","replace","upsert","vacuum","detach","begin"]
+
+
     const runSql = () => {
         setActiveOverlay('table');
         setError(null);
@@ -105,7 +108,15 @@ export default function SQLCraftGame() {
 
         let currentError = null;
         let isCorrect = false;
+        db.run("BEGIN TRANSACTION;")
         try {
+            if(badWords.some(word => query.toLowerCase().includes(word))){
+              throw new Error("Ve tvém dotazu jsou nějaká nehezká slova!") 
+            }
+            if(query.indexOf(';') > - 1){
+              throw new Error("Pouze jeden dotaz najednou!")
+            }
+
             const res = db.exec(query);
             isCorrect = isSuccesful(res);
             if (isCorrect) {
@@ -120,12 +131,14 @@ export default function SQLCraftGame() {
                 currentError = 'Nic tu není :/';
                 setError('Nic tu není :/');
             }
+            db.run("ROLLBACK;")
         } catch (e) {
             if (hearts != 0) {
                 setHearts(hearts - 1);
             }
             currentError = e.message;
             setError(currentError);
+            db.run("ROLLBACK;")
         }
         const queryData = {
             gameName: 'SQLCraft',
