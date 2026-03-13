@@ -86,14 +86,23 @@ export default function TULEscapeGame() {
         return false;
     };
 
+    const badWords = ["drop","delete","insert","update","alter", "truncate", "grant","commit","rollback", "pragma", "attach","replace","upsert","vacuum","detach","begin"]
+
+
     const runSql = () => {
         setActiveOverlay('table');
         setError(null);
         setResult(null);
         let currentError = null;
         let isCorrect = false;
-
+        db.run("BEGIN TRANSACTION;")
         try {
+            if(badWords.some(word => query.toLowerCase().includes(word))){
+              throw new Error("Ve tvém dotazu jsou nějaká nehezká slova!") 
+            }
+            if(query.indexOf(';') > - 1){
+              throw new Error("Pouze jeden dotaz najednou!")
+            }
             const res = db.exec(query);
             isCorrect = isSuccesful(res);
             if (isCorrect) {
@@ -107,9 +116,11 @@ export default function TULEscapeGame() {
                 currentError = 'Prázdný výsledek';
                 setError(currentError);
             }
+            db.run("ROLLBACK;")
         } catch (e) {
             currentError = e.message;
             setError(currentError);
+            db.run("ROLLBACK;")
         }
         const queryData = {
             gameName: 'TULEscape',
