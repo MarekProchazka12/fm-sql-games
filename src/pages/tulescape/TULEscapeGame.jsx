@@ -8,7 +8,8 @@ import { supabase } from '../../supabaseClient';
 import Editor from 'react-simple-code-editor';
 import { highlight, languages } from 'prismjs/components/prism-core';
 import 'prismjs/components/prism-sql';
-import { sqlDictionary } from '../../data/sqlDictionary'
+import { sqlDictionary } from '../../data/sqlDictionary';
+import { useGameScore } from '../../hooks/useGameScore';
 
 export default function TULEscapeGame() {
     const [activeOverlay, setActiveOverlay] = useState('table');
@@ -19,16 +20,17 @@ export default function TULEscapeGame() {
     const [query, setQuery] = useState('SEM PIŠ DOTAZY');
     const [result, setResult] = useState(null);
     const [error, setError] = useState(null);
+    const { score, registerMistake, registerHint, submitScene } = useGameScore();
 
     const toggleOverlay = (type) => {
         setActiveOverlay(type);
     };
 
-     useEffect(() => {
+    useEffect(() => {
         const editor = document.querySelector('.tul-input-area');
         if (editor) {
             setTimeout(() => {
-            editor.scrollTop = editor.scrollHeight;
+                editor.scrollTop = editor.scrollHeight;
             }, 0);
         }
     }, [query]);
@@ -86,8 +88,24 @@ export default function TULEscapeGame() {
         return false;
     };
 
-    const badWords = ["drop","delete","insert","update","alter", "truncate", "grant","commit","rollback", "pragma", "attach","replace","upsert","vacuum","detach","begin"]
-
+    const badWords = [
+        'drop',
+        'delete',
+        'insert',
+        'update',
+        'alter',
+        'truncate',
+        'grant',
+        'commit',
+        'rollback',
+        'pragma',
+        'attach',
+        'replace',
+        'upsert',
+        'vacuum',
+        'detach',
+        'begin',
+    ];
 
     const runSql = () => {
         setActiveOverlay('table');
@@ -95,20 +113,24 @@ export default function TULEscapeGame() {
         setResult(null);
         let currentError = null;
         let isCorrect = false;
-        db.run("BEGIN TRANSACTION;")
+        db.run('BEGIN TRANSACTION;');
         try {
-            if(badWords.some(word => query.toLowerCase().includes(word))){
-              throw new Error("Ve tvém dotazu jsou nějaká nehezká slova!") 
+            if (badWords.some((word) => query.toLowerCase().includes(word))) {
+                throw new Error('Ve tvém dotazu jsou nějaká nehezká slova!');
             }
-            if(query.indexOf(';') > - 1){
-              throw new Error("Pouze jeden dotaz najednou!")
+			const statements = query.split(';').map(s => s.trim()).filter(s => s.length > 0);
+            if (statements.length > 1) {
+                throw new Error('Pouze jeden dotaz najednou!');
             }
             const res = db.exec(query);
             isCorrect = isSuccesful(res);
             if (isCorrect) {
                 if (currentScene - 1 === lastSuccessScene) {
                     setLastSuccessScene((prev) => prev + 1);
+					submitScene();
                 }
+            } else {
+                registerMistake(); 
             }
             if (!_.isEqual(res, [])) {
                 setResult(res);
@@ -116,11 +138,12 @@ export default function TULEscapeGame() {
                 currentError = 'Prázdný výsledek';
                 setError(currentError);
             }
-            db.run("ROLLBACK;")
+            db.run('ROLLBACK;');
         } catch (e) {
+			registerMistake()
             currentError = e.message;
             setError(currentError);
-            db.run("ROLLBACK;")
+            db.run('ROLLBACK;');
         }
         const queryData = {
             gameName: 'TULEscape',
@@ -143,7 +166,13 @@ export default function TULEscapeGame() {
                 <button className="tool-square" onClick={() => toggleOverlay('schema')}>
                     📜
                 </button>
-                <button className="tul-tool-square" onClick={() => toggleOverlay('hint')}>
+                <button
+                    className="tul-tool-square"
+                    onClick={() => {
+                        toggleOverlay('hint');
+                        registerHint();
+                    }}
+                >
                     💡
                 </button>
             </div>
@@ -161,21 +190,26 @@ export default function TULEscapeGame() {
                             <h3>NÁPOVĚDA</h3>
                             {currSceneData.keywords && currSceneData.keywords.length > 0 ? (
                                 <div className="hint-content">
-                                    <p className="hint-intro">K vyřešení tohoto úkolu zkus použít tyto příkazy:</p>
+                                    <p className="hint-intro">
+                                        K vyřešení tohoto úkolu zkus použít tyto příkazy:
+                                    </p>
 
                                     <ul className="keyword-list">
                                         {currSceneData.keywords.map((keyword, index) => (
                                             <li key={index} className="hint-item">
                                                 <strong className="hint-keyword">{keyword}</strong>
                                                 <span className="hint-definition">
-                                                    {sqlDictionary[keyword] || " - (Definice chybí)"}
+                                                    {sqlDictionary[keyword] ||
+                                                        ' - (Definice chybí)'}
                                                 </span>
                                             </li>
                                         ))}
                                     </ul>
                                 </div>
                             ) : (
-                                <p className="hint-text">Pro tuto úroveň není k dispozici žádná speciální nápověda.</p>
+                                <p className="hint-text">
+                                    Pro tuto úroveň není k dispozici žádná speciální nápověda.
+                                </p>
                             )}
                         </div>
                     )}
@@ -219,7 +253,8 @@ export default function TULEscapeGame() {
                 }}
             >
                 <div className="tul-info-bar">
-                    <span>Uživatel: ladislav.jira</span> | <span>Status: INFILTRATED</span>
+                    <span>Uživatel: ladislav.jira</span> | <span>Status: INFILTRATED</span> |{' '}
+                    <span>Skóre: {score}</span>
                 </div>
 
                 {currentScene > 1 && (
@@ -249,12 +284,12 @@ export default function TULEscapeGame() {
 
                 <div className="tul-bottom-area">
                     <Editor
-                            value={query}
-                            onValueChange={code => setQuery(code)}
-                            highlight={code => highlight(code, languages.sql)}
-                            padding={15}
-                            className="tul-input-area" 
-                        />
+                        value={query}
+                        onValueChange={(code) => setQuery(code)}
+                        highlight={(code) => highlight(code, languages.sql)}
+                        padding={15}
+                        className="tul-input-area"
+                    />
                     <button onClick={runSql} className="tul-send-btn">
                         PROVÉST DOTAZ
                     </button>

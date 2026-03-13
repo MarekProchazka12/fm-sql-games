@@ -34,7 +34,6 @@
             "prompt": "Přišla noc. Kterých mobů by ses měl bát? (hostilní mobové)",
             "answer": "SELECT mob_type FROM Mob WHERE is_hostile = 1;",
             "keywords": ["SELECT", "FROM", "WHERE"]
-
         },
         {
             "id": 5,
