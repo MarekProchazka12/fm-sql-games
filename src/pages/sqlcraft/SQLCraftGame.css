@@ -170,8 +170,6 @@ body,
         inset -3px -3px #444;
 }
 
-
-
 .input-area {
     resize: none;
     width: 48%;
@@ -191,46 +189,46 @@ body,
     /* Zajistí, že pozadí se vykreslí i "pod" textem při skrolování */
     background-attachment: local;
     width: '100%';
-    overflow: auto !important; 
+    overflow: auto !important;
     position: relative;
     scroll-behavior: smooth;
 }
 
 .input-area::-webkit-scrollbar {
-  width: 12px;
-  height: 12px; /* Musíš nastavit i výšku pro vodorovný scroll! */
+    width: 12px;
+    height: 12px; /* Musíš nastavit i výšku pro vodorovný scroll! */
 }
 
 /* 2. Vynucení barvy pro vodorovnou dráhu */
 .input-area::-webkit-scrollbar-track {
-  background: #222 !important;
+    background: #222 !important;
 }
 
 /* 3. Oprava vnitřních prvků, aby "nepřetékaly" a neměly bílé okraje */
-.input-area textarea, 
+.input-area textarea,
 .input-area pre {
-  background: transparent !important; /* Pozadí musí být průhledné, aby platila černá z .input-area */
-  margin: 0 !important;
-  border: none !important;
-  outline: none !important;
-  /* Zamezí zobrazení vnitřních scrollbarů, které dělají nepořádek */
-  overflow: hidden !important; 
+    background: transparent !important; /* Pozadí musí být průhledné, aby platila černá z .input-area */
+    margin: 0 !important;
+    border: none !important;
+    outline: none !important;
+    /* Zamezí zobrazení vnitřních scrollbarů, které dělají nepořádek */
+    overflow: hidden !important;
 }
 
 .input-area textarea::-webkit-scrollbar,
 .input-area::-webkit-scrollbar {
-  width: 12px;
+    width: 12px;
 }
 
 .input-area textarea::-webkit-scrollbar-track,
 .input-area::-webkit-scrollbar-track {
-  background: #222;
+    background: #222;
 }
 
 .input-area textarea::-webkit-scrollbar-thumb,
 .input-area::-webkit-scrollbar-thumb {
-  background: #8b8b8b;
-  border: 2px solid #000;
+    background: #8b8b8b;
+    border: 2px solid #000;
 }
 
 .info-bar {
@@ -388,23 +386,23 @@ body,
 
 /*CSS PRO TEXTAREA*/
 .token.keyword {
-  color: #55ff55 !important;
-  font-weight: bold;
+    color: #55ff55 !important;
+    font-weight: bold;
 }
 
 /* Stringy a hodnoty v uvozovkách */
 .token.string {
-  color: #ffff55 !important; /* Žlutá */
+    color: #ffff55 !important; /* Žlutá */
 }
 
 /* Názvy tabulek nebo funkcí */
 .token.function {
-  color: #55ffff !important;
+    color: #55ffff !important;
 }
 
 /* Čísla */
 .token.number {
-  color: #ff55ff !important; 
+    color: #ff55ff !important;
 }
 
 .hint-intro {
@@ -426,8 +424,8 @@ body,
 }
 
 .hint-keyword {
-    background-color: #2b2b2b; 
-    color: #ff9d00; 
+    background-color: #2b2b2b;
+    color: #ff9d00;
     padding: 3px 6px;
     border-radius: 4px;
     font-family: 'Courier New', Courier, monospace;

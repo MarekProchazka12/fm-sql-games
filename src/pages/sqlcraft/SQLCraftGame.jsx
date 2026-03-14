@@ -9,12 +9,13 @@ import Editor from 'react-simple-code-editor';
 import { highlight, languages } from 'prismjs/components/prism-core';
 import 'prismjs/components/prism-sql';
 import { sqlDictionary } from '../../data/sqlDictionary';
+import { useGameScore } from '../../hooks/useGameScore';
 
 export default function SQLCraftGame() {
     const [activeOverlay, setActiveOverlay] = useState('table');
 
     const [db, setDb] = useState(null);
-    const [hearts, setHearts] = useState(9);
+    const { score, registerMistake, registerHint, submitScene } = useGameScore();
     const [currentScene, setCurrentScene] = useState(1);
     const [lastSuccessScene, setLastSuccessScene] = useState(0);
     const currSceneData = gameData.scenes[currentScene - 1];
@@ -24,8 +25,6 @@ export default function SQLCraftGame() {
     const toggleOverlay = (type) => {
         setActiveOverlay(type);
     };
-
-    
 
     useEffect(() => {
         initSqlJs({ locateFile: (f) => `/${f}` }).then((SQL) => {
@@ -40,7 +39,7 @@ export default function SQLCraftGame() {
         const editor = document.querySelector('.input-area');
         if (editor) {
             setTimeout(() => {
-            editor.scrollTop = editor.scrollHeight;
+                editor.scrollTop = editor.scrollHeight;
             }, 0);
         }
     }, [query]);
@@ -98,8 +97,24 @@ export default function SQLCraftGame() {
         setCurrentScene((prev) => prev - 1);
     }
 
-    const badWords = ["drop","delete","insert","update","alter", "truncate", "grant","commit","rollback", "pragma", "attach","replace","upsert","vacuum","detach","begin"]
-
+    const badWords = [
+        'drop',
+        'delete',
+        'insert',
+        'update',
+        'alter',
+        'truncate',
+        'grant',
+        'commit',
+        'rollback',
+        'pragma',
+        'attach',
+        'replace',
+        'upsert',
+        'vacuum',
+        'detach',
+        'begin',
+    ];
 
     const runSql = () => {
         setActiveOverlay('table');
@@ -108,13 +123,14 @@ export default function SQLCraftGame() {
 
         let currentError = null;
         let isCorrect = false;
-        db.run("BEGIN TRANSACTION;")
+        db.run('BEGIN TRANSACTION;');
         try {
-            if(badWords.some(word => query.toLowerCase().includes(word))){
-              throw new Error("Ve tvém dotazu jsou nějaká nehezká slova!") 
+            if (badWords.some((word) => query.toLowerCase().includes(word))) {
+                throw new Error('Ve tvém dotazu jsou nějaká nehezká slova!');
             }
-            if(query.indexOf(';') > - 1){
-              throw new Error("Pouze jeden dotaz najednou!")
+            const statements = query.split(';').map(s => s.trim()).filter(s => s.length > 0);
+            if (statements.length > 1) {
+                throw new Error('Pouze jeden dotaz najednou!');
             }
 
             const res = db.exec(query);
@@ -122,7 +138,10 @@ export default function SQLCraftGame() {
             if (isCorrect) {
                 if (currentScene - 1 == lastSuccessScene) {
                     setLastSuccessScene((prev) => prev + 1);
+                    submitScene();
                 }
+            } else {
+                registerMistake();
             }
             setError(null);
             if (!_.isEqual(res, [])) {
@@ -131,14 +150,12 @@ export default function SQLCraftGame() {
                 currentError = 'Nic tu není :/';
                 setError('Nic tu není :/');
             }
-            db.run("ROLLBACK;")
+            db.run('ROLLBACK;');
         } catch (e) {
-            if (hearts != 0) {
-                setHearts(hearts - 1);
-            }
+            registerMistake();
             currentError = e.message;
             setError(currentError);
-            db.run("ROLLBACK;")
+            db.run('ROLLBACK;');
         }
         const queryData = {
             gameName: 'SQLCraft',
@@ -162,7 +179,13 @@ export default function SQLCraftGame() {
                 <button className={`tool-square`} onClick={() => toggleOverlay('schema')}>
                     📜
                 </button>
-                <button className={`tool-square`} onClick={() => toggleOverlay('hint')}>
+                <button
+                    className={`tool-square`}
+                    onClick={() => {
+                        toggleOverlay('hint');
+                        registerHint();
+                    }}
+                >
                     💡
                 </button>
             </div>
@@ -174,21 +197,26 @@ export default function SQLCraftGame() {
                             <h3>NÁPOVĚDA</h3>
                             {currSceneData.keywords && currSceneData.keywords.length > 0 ? (
                                 <div className="hint-content">
-                                    <p className="hint-intro">K vyřešení tohoto úkolu zkus použít tyto příkazy:</p>
+                                    <p className="hint-intro">
+                                        K vyřešení tohoto úkolu zkus použít tyto příkazy:
+                                    </p>
 
                                     <ul className="keyword-list">
                                         {currSceneData.keywords.map((keyword, index) => (
                                             <li key={index} className="hint-item">
                                                 <strong className="hint-keyword">{keyword}</strong>
                                                 <span className="hint-definition">
-                                                    {sqlDictionary[keyword] || " - (Definice chybí)"}
+                                                    {sqlDictionary[keyword] ||
+                                                        ' - (Definice chybí)'}
                                                 </span>
                                             </li>
                                         ))}
                                     </ul>
                                 </div>
                             ) : (
-                                <p className="hint-text">Pro tuto úroveň není k dispozici žádná speciální nápověda.</p>
+                                <p className="hint-text">
+                                    Pro tuto úroveň není k dispozici žádná speciální nápověda.
+                                </p>
                             )}
                         </div>
                     )}
@@ -243,11 +271,7 @@ export default function SQLCraftGame() {
                 }}
             >
                 <div className="info-bar">
-                    <span>Hráč: Steve</span> |{' '}
-                    <span>
-                        {'💔'.repeat(9 - hearts)}
-                        {'❤️'.repeat(hearts)}
-                    </span>
+                    <span>Hráč: Steve</span> | <span>Skóre: {score} 💎</span>
                 </div>
                 {currentScene > 1 && (
                     <button className="previous-scene" onClick={prevScene}>
@@ -268,13 +292,13 @@ export default function SQLCraftGame() {
                     </p>
                 </div>
                 <div className="bottom-area">
-                        <Editor
-                            value={query}
-                            onValueChange={code => setQuery(code)}
-                            highlight={code => highlight(code, languages.sql)}
-                            padding={15}
-                            className="input-area" 
-                        />
+                    <Editor
+                        value={query}
+                        onValueChange={(code) => setQuery(code)}
+                        highlight={(code) => highlight(code, languages.sql)}
+                        padding={15}
+                        className="input-area"
+                    />
                     <button onClick={runSql} className="send-btn">
                         PROVÉST DOTAZ
                     </button>
