@@ -1,0 +1,117 @@
+.victory-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.victory-modal {
+    background-color: #ffffff;
+    border-radius: 15px;
+    border-bottom: 5px solid #ef7d00;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+    width: 90%;
+    max-width: 450px;
+    padding: 40px 30px;
+    text-align: center;
+    color: #333;
+    font-family: 'Segoe UI', Roboto, sans-serif;
+    animation: popIn 0.3s ease-out;
+}
+
+@keyframes popIn {
+    0% {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.victory-header h2 {
+    margin: 0;
+    color: #222;
+    font-size: 2.2rem;
+    letter-spacing: -1px;
+}
+
+.victory-body {
+    margin: 25px 0;
+}
+
+.victory-body p {
+    font-size: 1.1rem;
+    color: #666;
+}
+
+.score-display {
+    margin-top: 25px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.score-label {
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #777;
+}
+
+.score-value {
+    font-size: 3.8rem;
+    font-weight: bold;
+    color: #ef7d00;
+}
+
+.victory-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.victory-actions button {
+    padding: 12px 25px;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition:
+        background 0.2s,
+        transform 0.2s ease;
+}
+
+.btn-menu {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+.btn-menu:hover {
+    background-color: #d0d0d0;
+    transform: translateY(-3px);
+}
+
+.btn-restart {
+    background-color: #ef7d00;
+    color: white;
+}
+
+.btn-restart:hover {
+    background-color: #cc6a00;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(239, 125, 0, 0.3);
+}

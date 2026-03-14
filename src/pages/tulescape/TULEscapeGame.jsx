@@ -118,7 +118,10 @@ export default function TULEscapeGame() {
             if (badWords.some((word) => query.toLowerCase().includes(word))) {
                 throw new Error('Ve tvém dotazu jsou nějaká nehezká slova!');
             }
-			const statements = query.split(';').map(s => s.trim()).filter(s => s.length > 0);
+            const statements = query
+                .split(';')
+                .map((s) => s.trim())
+                .filter((s) => s.length > 0);
             if (statements.length > 1) {
                 throw new Error('Pouze jeden dotaz najednou!');
             }
@@ -127,10 +130,10 @@ export default function TULEscapeGame() {
             if (isCorrect) {
                 if (currentScene - 1 === lastSuccessScene) {
                     setLastSuccessScene((prev) => prev + 1);
-					submitScene();
+                    submitScene();
                 }
             } else {
-                registerMistake(); 
+                registerMistake();
             }
             if (!_.isEqual(res, [])) {
                 setResult(res);
@@ -140,7 +143,7 @@ export default function TULEscapeGame() {
             }
             db.run('ROLLBACK;');
         } catch (e) {
-			registerMistake()
+            registerMistake();
             currentError = e.message;
             setError(currentError);
             db.run('ROLLBACK;');
