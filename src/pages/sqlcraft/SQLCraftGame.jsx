@@ -10,6 +10,7 @@ import { highlight, languages } from 'prismjs/components/prism-core';
 import 'prismjs/components/prism-sql';
 import { sqlDictionary } from '../../data/sqlDictionary';
 import { useGameScore } from '../../hooks/useGameScore';
+import VictoryScreen from '../../components/VictoryScreen';
 
 export default function SQLCraftGame() {
     const [activeOverlay, setActiveOverlay] = useState('table');
@@ -128,7 +129,10 @@ export default function SQLCraftGame() {
             if (badWords.some((word) => query.toLowerCase().includes(word))) {
                 throw new Error('Ve tvém dotazu jsou nějaká nehezká slova!');
             }
-            const statements = query.split(';').map(s => s.trim()).filter(s => s.length > 0);
+            const statements = query
+                .split(';')
+                .map((s) => s.trim())
+                .filter((s) => s.length > 0);
             if (statements.length > 1) {
                 throw new Error('Pouze jeden dotaz najednou!');
             }
@@ -169,6 +173,8 @@ export default function SQLCraftGame() {
     };
 
     if (!db) return <div className="loading">Načítám svět...</div>;
+
+    //return <VictoryScreen score={850} gameName="SQLCraft" theme="sqlcraft" />
 
     return (
         <div className="page-container">
