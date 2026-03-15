@@ -18,8 +18,8 @@ export default function SQLCraftGame() {
 
     const [db, setDb] = useState(null);
     const { score, registerMistake, registerHint, submitScene, resetScore } = useGameScore();
-    const [currentScene, setCurrentScene] = useState(20);
-    const [lastSuccessScene, setLastSuccessScene] = useState(19);
+    const [currentScene, setCurrentScene] = useState(1);
+    const [lastSuccessScene, setLastSuccessScene] = useState(0);
     const currSceneData = gameData.scenes[currentScene - 1];
     const [query, setQuery] = useState('SEM PIŠ DOTAZY');
     const [result, setResult] = useState(null);

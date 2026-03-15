@@ -16,8 +16,8 @@ import { useNavigate } from 'react-router-dom';
 export default function TULEscapeGame() {
     const [activeOverlay, setActiveOverlay] = useState('table');
     const [db, setDb] = useState(null);
-    const [currentScene, setCurrentScene] = useState(20);
-    const [lastSuccessScene, setLastSuccessScene] = useState(19);
+    const [currentScene, setCurrentScene] = useState(1);
+    const [lastSuccessScene, setLastSuccessScene] = useState(0);
     const currSceneData = gameData.scenes[currentScene - 1];
     const [query, setQuery] = useState('SEM PIŠ DOTAZY');
     const [result, setResult] = useState(null);
