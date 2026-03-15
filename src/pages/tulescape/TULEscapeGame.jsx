@@ -10,17 +10,21 @@ import { highlight, languages } from 'prismjs/components/prism-core';
 import 'prismjs/components/prism-sql';
 import { sqlDictionary } from '../../data/sqlDictionary';
 import { useGameScore } from '../../hooks/useGameScore';
+import VictoryScreen from '../../components/VictoryScreen';
+import { useNavigate } from 'react-router-dom';
 
 export default function TULEscapeGame() {
     const [activeOverlay, setActiveOverlay] = useState('table');
     const [db, setDb] = useState(null);
-    const [currentScene, setCurrentScene] = useState(1);
-    const [lastSuccessScene, setLastSuccessScene] = useState(0);
+    const [currentScene, setCurrentScene] = useState(20);
+    const [lastSuccessScene, setLastSuccessScene] = useState(19);
     const currSceneData = gameData.scenes[currentScene - 1];
     const [query, setQuery] = useState('SEM PIŠ DOTAZY');
     const [result, setResult] = useState(null);
     const [error, setError] = useState(null);
-    const { score, registerMistake, registerHint, submitScene } = useGameScore();
+    const { score, registerMistake, registerHint, submitScene, resetScore } = useGameScore();
+    const navigate = useNavigate();
+    const [isGameFinished, setIsGameFinished] = useState(false);
 
     const toggleOverlay = (type) => {
         setActiveOverlay(type);
@@ -86,6 +90,32 @@ export default function TULEscapeGame() {
             return true;
         }
         return false;
+    };
+
+    function nextScene() {
+        if (currentScene >= gameData.number_of_scenes) {
+            setIsGameFinished(true);
+        } else {
+            setCurrentScene((prev) => prev + 1);
+        }
+    }
+
+    function prevScene() {
+        setCurrentScene((prev) => prev - 1);
+    }
+
+    const handleRestart = () => {
+        setIsGameFinished(false);
+        setCurrentScene(1);
+        setLastSuccessScene(0);
+        setQuery('SEM PIŠ DOTAZY');
+        setResult(null);
+        setError(null);
+        resetScore();
+    };
+
+    const handleBackToMenu = () => {
+        navigate('/');
     };
 
     const badWords = [
@@ -162,6 +192,14 @@ export default function TULEscapeGame() {
 
     return (
         <div className="tul-page-container">
+            {isGameFinished && (
+                <VictoryScreen
+                    score={score}
+                    gameName="TULEscape"
+                    onRestart={handleRestart}
+                    onBackToMenu={handleBackToMenu}
+                />
+            )}
             <div className="tul-side-toolbar">
                 <button className="tool-square" onClick={() => toggleOverlay('table')}>
                     📊
@@ -261,19 +299,14 @@ export default function TULEscapeGame() {
                 </div>
 
                 {currentScene > 1 && (
-                    <button
-                        className="tul-previous-scene"
-                        onClick={() => setCurrentScene((prev) => prev - 1)}
-                    >
+                    <button className="tul-previous-scene" onClick={prevScene}>
                         ◀
                     </button>
                 )}
+
                 {currentScene <= lastSuccessScene && (
-                    <button
-                        className="tul-next-scene"
-                        onClick={() => setCurrentScene((prev) => prev + 1)}
-                    >
-                        ▶
+                    <button className="tul-next-scene" onClick={nextScene}>
+                        {currentScene === gameData.number_of_scenes ? ' DOKONČIT HRU ' : '▶'}
                     </button>
                 )}
 

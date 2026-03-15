@@ -325,21 +325,22 @@ body,
 .next-scene {
     position: absolute;
     top: 50%;
-    transform: translateY(-50%); /* Vycentrování na střed výšky */
-    width: 50px;
+    transform: translateY(-50%);
+    min-width: 50px;
     height: 50px;
-    background-color: #8b8b8b; /* Typická MC šedá */
+    padding: 0 15px;
+    background-color: #8b8b8b;
     border: 4px solid #000;
     color: white;
-    font-size: 24px;
+    font-size: 20px;
+    font-weight: bold;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 100;
     image-rendering: pixelated;
-
-    /* 3D efekt - světlý vršek a tmavý spodek */
+    white-space: nowrap;
     box-shadow:
         inset -4px -4px #555,
         inset 4px 4px #dbdbdb;
@@ -349,6 +350,8 @@ body,
 .previous-scene {
     left: 20px;
     top: 20%;
+    padding: 0;
+    width: 50px;
 }
 
 .next-scene {
