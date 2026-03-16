@@ -7,7 +7,7 @@ import TULEscapeSetup from './pages/tulescape/TULEScapeSetup';
 
 function App() {
     return (
-        <Router>
+        <Router basename={import.meta.env.BASE_URL}>
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="sqlcraft" element={<SQLCraftSetup />} />
