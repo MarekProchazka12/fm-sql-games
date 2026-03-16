@@ -6,7 +6,7 @@ const games = [
         id: 'sqlcraft',
         title: 'SQL Craft',
         description: 'Sestav diamantový meč v kostičkovém světě pomocí SQL dotazů.',
-        image: '/pageAssets/SQLCraft/scenes/20.jpg',
+        image: 'pageAssets/SQLCraft/scenes/20.jpg',
         active: true,
     },
     {
