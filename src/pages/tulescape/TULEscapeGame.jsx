@@ -40,7 +40,7 @@ export default function TULEscapeGame() {
     }, [query]);
 
     useEffect(() => {
-        initSqlJs({ locateFile: (f) => `/${f}` }).then((SQL) => {
+        initSqlJs({ locateFile: (f) => `${import.meta.env.BASE_URL}${f}` }).then((SQL) => {
             const database = new SQL.Database();
             database.run(gameData.createScript);
             database.run(gameData.insertScript);
