@@ -102,7 +102,7 @@
         {
             "id": 13,
             "img": "13.jpg",
-            "story": "Čím blíže jsi k diamantům, tím silnější jsou jejich strážci. Musíš identifikovat skutečné predátory – ty, co mají více životů, než je průměr, a obývají více než jednu strukturu. Představují totiž největší hrozbu pro tvou plánovanou cestu.",
+            "story": "Čím blíže jsi k diamantům, tím silnější jsou jejich strážci. Musíš identifikovat skutečné predátory. Ty, co mají více životů, než je průměr, a obývají více než jednu strukturu. Představují totiž největší hrozbu pro tvou plánovanou cestu.",
             "prompt": "Najdi silné moby (zdraví > průměr) vyskytující se ve více než jedné struktuře.",
             "answer": "SELECT mob_type, health FROM Mob WHERE health > (SELECT AVG(health) FROM Mob) AND mob_id IN (SELECT mob_id FROM Inhabits GROUP BY mob_id HAVING COUNT(structure_id) > 1);",
             "keywords": ["WHERE", "AVG", "IN", "GROUP BY", "HAVING", "COUNT"]
@@ -150,7 +150,7 @@
         {
             "id": 19,
             "img": "19.jpg",
-            "story": "Už máš dost neustálého boje. Hledáš snadnější cestu – strukturu, která skrývá diamanty, ale je přitom naprosto opuštěná. Propočítáváš vzdálenost k těmto tichým místům, abys mohl naplánovat svou cestu k cíli.",
+            "story": "Už máš dost neustálého boje. Hledáš snadnější cestu. Strukturu, která skrývá diamanty, ale je přitom naprosto opuštěná. Propočítáváš vzdálenost k těmto tichým místům, abys mohl naplánovat svou cestu k cíli.",
             "prompt": "Najdi blízké struktury (do 500 bloků) s diamanty, kde nikdo nebydlí.",
             "answer": "SELECT ST.structure_type, S.x_coordinate, S.y_coordinate FROM Player P, Structure ST JOIN Surrounding S ON ST.structure_id = S.structure_id JOIN Loot L ON ST.structure_id = L.structure_id LEFT JOIN Inhabits INH ON ST.structure_id = INH.structure_id WHERE P.nickname = 'SQL_Hero' AND L.item_id = (SELECT item_id FROM Item WHERE name = 'Diamond') AND INH.mob_id IS NULL AND ((S.x_coordinate - P.x_coordinate)*(S.x_coordinate - P.x_coordinate) + (S.y_coordinate - P.y_coordinate)*(S.y_coordinate - P.y_coordinate)) <= 500;",
             "keywords": ["JOIN", "LEFT JOIN", "WHERE", "AND", "IS NULL"]

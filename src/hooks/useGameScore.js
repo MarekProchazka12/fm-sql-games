@@ -37,6 +37,12 @@ export const useGameScore = () => {
         return earnedPoints;
     };
 
+    const resetScore = () => {
+        setTotalScore(0);
+        setSceneAttempts(0);
+        setUsedHint(false);
+    };
+
     return {
         score: totalScore,
         sceneAttempts,
@@ -44,5 +50,6 @@ export const useGameScore = () => {
         registerMistake,
         registerHint,
         submitScene,
+        resetScore,
     };
 };

@@ -14,8 +14,8 @@ Pokročilejší modul s hackerskou tematikou zasazený do prostředí Technické
 
 * **Frontend:** React.js (funkcionální komponenty, hooks)
 * **Stylování:** Čisté CSS
-* **Databáze (Klient):** `sql.js` (WebAssembly port SQLite) – databáze běží kompletně v prohlížeči uživatele.
-* **Backend / Logování:** Supabase – ukládání historie dotazů, úspěšnosti a chyb pro analytické účely.
+* **Databáze (Klient):** `sql.js` (WebAssembly port SQLite) - databáze běží kompletně v prohlížeči uživatele.
+* **Backend / Logování:** Supabase - ukládání historie dotazů, úspěšnosti a chyb pro analytické účely.
 
 ## 🚀 Instalace a spuštění (Local Setup)
 

@@ -11,18 +11,21 @@ import 'prismjs/components/prism-sql';
 import { sqlDictionary } from '../../data/sqlDictionary';
 import { useGameScore } from '../../hooks/useGameScore';
 import VictoryScreen from '../../components/VictoryScreen';
+import { useNavigate } from 'react-router-dom';
 
 export default function SQLCraftGame() {
     const [activeOverlay, setActiveOverlay] = useState('table');
 
     const [db, setDb] = useState(null);
-    const { score, registerMistake, registerHint, submitScene } = useGameScore();
+    const { score, registerMistake, registerHint, submitScene, resetScore } = useGameScore();
     const [currentScene, setCurrentScene] = useState(1);
     const [lastSuccessScene, setLastSuccessScene] = useState(0);
     const currSceneData = gameData.scenes[currentScene - 1];
     const [query, setQuery] = useState('SEM PIŠ DOTAZY');
     const [result, setResult] = useState(null);
     const [error, setError] = useState(null);
+    const navigate = useNavigate();
+    const [isGameFinished, setIsGameFinished] = useState(false);
     const toggleOverlay = (type) => {
         setActiveOverlay(type);
     };
@@ -91,12 +94,30 @@ export default function SQLCraftGame() {
     };
 
     function nextScene() {
-        setCurrentScene((prev) => prev + 1);
+        if (currentScene >= gameData.number_of_scenes) {
+            setIsGameFinished(true);
+        } else {
+            setCurrentScene((prev) => prev + 1);
+        }
     }
 
     function prevScene() {
         setCurrentScene((prev) => prev - 1);
     }
+
+    const handleRestart = () => {
+        setIsGameFinished(false);
+        setCurrentScene(1);
+        setLastSuccessScene(0);
+        setQuery('SEM PIŠ DOTAZY');
+        setResult(null);
+        setError(null);
+        resetScore();
+    };
+
+    const handleBackToMenu = () => {
+        navigate('/');
+    };
 
     const badWords = [
         'drop',
@@ -174,10 +195,16 @@ export default function SQLCraftGame() {
 
     if (!db) return <div className="loading">Načítám svět...</div>;
 
-    //return <VictoryScreen score={850} gameName="SQLCraft" theme="sqlcraft" />
-
     return (
         <div className="page-container">
+            {isGameFinished && (
+                <VictoryScreen
+                    score={score}
+                    gameName="SQLCraft"
+                    onRestart={handleRestart}
+                    onBackToMenu={handleBackToMenu}
+                />
+            )}
             <div className="side-toolbar">
                 <button className={`tool-square`} onClick={() => toggleOverlay('table')}>
                     📊
@@ -287,7 +314,7 @@ export default function SQLCraftGame() {
 
                 {currentScene <= lastSuccessScene && (
                     <button className="next-scene" onClick={nextScene}>
-                        ▶
+                        {currentScene === gameData.number_of_scenes ? ' DOKONČIT HRU ' : '▶'}
                     </button>
                 )}
                 <div className="task-book">
