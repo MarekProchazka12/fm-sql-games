@@ -15,7 +15,6 @@ import { useNavigate } from 'react-router-dom';
 
 export default function SQLCraftGame() {
     const [activeOverlay, setActiveOverlay] = useState('table');
-
     const [db, setDb] = useState(null);
     const { score, registerMistake, registerHint, submitScene, resetScore } = useGameScore();
     const [currentScene, setCurrentScene] = useState(1);
@@ -193,6 +192,22 @@ export default function SQLCraftGame() {
         logQuery(queryData);
     };
 
+    const saveScoreToLeaderboard = async (playerName) => {
+        const { error } = await supabase.from('leaderboard').insert([
+            {
+                game_name: 'SQLCraft',
+                player_name: playerName,
+                score: score,
+            },
+        ]);
+
+        if (error) {
+            console.error('Chyba při ukládání skóre:', error.message);
+        } else {
+            console.log('Skóre úspěšně uloženo do žebříčku!');
+        }
+    };
+
     if (!db) return <div className="loading">Načítám svět...</div>;
 
     return (
@@ -203,6 +218,7 @@ export default function SQLCraftGame() {
                     gameName="SQLCraft"
                     onRestart={handleRestart}
                     onBackToMenu={handleBackToMenu}
+                    onSubmitScore={saveScoreToLeaderboard}
                 />
             )}
             <div className="side-toolbar">
