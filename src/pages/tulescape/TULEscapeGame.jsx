@@ -307,7 +307,7 @@ export default function TULEscapeGame() {
             <div
                 className="tul-game-screen"
                 style={{
-                    backgroundImage: `url("/pageAssets/TULEscape/scenes/${currSceneData.img}")`,
+                    backgroundImage: `url("${import.meta.env.BASE_URL}pageAssets/TULEscape/scenes/${currSceneData.img}")`,
                 }}
             >
                 <div className="tul-info-bar">

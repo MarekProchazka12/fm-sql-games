@@ -314,7 +314,7 @@ export default function SQLCraftGame() {
             <div
                 className="game-screen"
                 style={{
-                    backgroundImage: `url("/pageAssets/SQLCraft/scenes/${currSceneData.img}")`,
+                    backgroundImage: `url("${import.meta.env.BASE_URL}pageAssets/SQLCraft/scenes/${currSceneData.img}")`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                 }}
