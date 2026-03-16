@@ -86,7 +86,7 @@ export default function SQLCraftGame() {
             return false;
         }
 
-        if (_.isEqual(res, sceneConfirmTable)) {
+        if (_.isEqual(res.values, sceneConfirmTable.values)) {
             return true;
         }
         return false;
