@@ -188,6 +188,22 @@ export default function TULEscapeGame() {
         logQuery(queryData);
     };
 
+    const saveScoreToLeaderboard = async (playerName) => {
+        const { error } = await supabase.from('leaderboard').insert([
+            {
+                game_name: 'TULEscape',
+                player_name: playerName,
+                score: score,
+            },
+        ]);
+
+        if (error) {
+            console.error('Chyba při ukládání skóre:', error.message);
+        } else {
+            console.log('Skóre úspěšně uloženo do žebříčku!');
+        }
+    };
+
     if (!db) return <div className="tul-loading">Navazuji spojení se servery TUL...</div>;
 
     return (
@@ -198,6 +214,7 @@ export default function TULEscapeGame() {
                     gameName="TULEscape"
                     onRestart={handleRestart}
                     onBackToMenu={handleBackToMenu}
+                    onSubmitScore={saveScoreToLeaderboard}
                 />
             )}
             <div className="tul-side-toolbar">

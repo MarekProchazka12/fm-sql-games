@@ -115,3 +115,63 @@
     transform: translateY(-3px);
     box-shadow: 0 5px 15px rgba(239, 125, 0, 0.3);
 }
+
+.leaderboard-submission {
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.leaderboard-hint {
+    font-size: 0.95rem;
+    font-weight: bold;
+    color: #ef7d00;
+    margin-bottom: 10px;
+}
+
+.input-group {
+    gap: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.player-input {
+    padding: 10px 15px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 60%;
+}
+
+.player-input:focus {
+    border-color: #ef7d00;
+}
+
+.btn-submit {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-submit:hover:not(:disabled) {
+    background-color: #000;
+}
+
+.btn-submit:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.success-msg {
+    color: #4caf50;
+    font-weight: bold;
+    font-size: 1.1rem;
+    animation: popIn 0.3s ease-out;
+}

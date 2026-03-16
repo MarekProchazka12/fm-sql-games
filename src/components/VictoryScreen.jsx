@@ -1,7 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './VictoryScreen.css';
 
-export default function VictoryScreen({ score, gameName, onRestart, onBackToMenu }) {
+export default function VictoryScreen({ score, gameName, onRestart, onBackToMenu, onSubmitScore }) {
+    const [playerName, setPlayerName] = useState('');
+    const [isSubmitted, setIsSubmitted] = useState(false);
+    const handleSubmit = () => {
+        if (playerName.trim() === '') return;
+        onSubmitScore(playerName);
+        setIsSubmitted(true);
+    };
     return (
         <div className="victory-overlay">
             <div className="victory-modal">
@@ -18,6 +25,32 @@ export default function VictoryScreen({ score, gameName, onRestart, onBackToMenu
                         <span className="score-label">Tvé finální skóre:</span>
                         <span className="score-value">{score}</span>
                     </div>
+                </div>
+                <div className="leaderboard-submission">
+                    {!isSubmitted ? (
+                        <>
+                            <p className="leaderboard-hint">Zapiš se do leaderboardu</p>
+                            <div className="input-group">
+                                <input
+                                    type="text"
+                                    placeholder="Zadej svou přezdívku..."
+                                    value={playerName}
+                                    onChange={(e) => setPlayerName(e.target.value)}
+                                    maxLength={20}
+                                    className="player-input"
+                                />
+                                <button
+                                    className="btn-submit"
+                                    onClick={handleSubmit}
+                                    disabled={playerName.trim() === ''}
+                                >
+                                    Odeslat
+                                </button>
+                            </div>
+                        </>
+                    ) : (
+                        <p className="success-msg">Skóre odesláno!</p>
+                    )}
                 </div>
 
                 <div className="victory-actions">
